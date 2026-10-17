@@ -24,6 +24,54 @@
   font-weight: 330;
   font-kerning: normal;
 
+  .brand {
+    height: 56px;
+    min-height: 56px;
+    gap: 4px;
+  }
+
+  .brand strong {
+    font-size: clamp(22px, 2vw, 32px);
+    font-weight: 600;
+    letter-spacing: -0.6px;
+    white-space: nowrap;
+  }
+
+  .brand-toggle {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    color: black;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .brand-toggle:active {
+    transform: scale(0.95);
+  }
+
+  .brand-toggle .brand-mark {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+  }
+
+  .desktop-sidebar-toggle {
+    display: none;
+  }
+
+  .workspace-label {
+    color: black;
+    font: 330 20px/1.4 var(--workspace-sans);
+    letter-spacing: -0.14px;
+    text-transform: none;
+  }
+
   .map-legend .legend-attention {
     display: inline-flex;
     align-items: center;
@@ -104,14 +152,38 @@
     font-weight: 330;
   }
 
-  :is(
-    .eyebrow,
-    .overview-eyebrow,
-    .workspace-label,
-    .navigation-label,
-    .intake-label,
-    .section-number
-  ) {
+  .yard-select-wrap {
+    grid-template-columns: 22px minmax(0, 1fr) 16px;
+    gap: 4px 8px;
+    padding: 12px;
+  }
+
+  .yard-select-wrap select {
+    min-width: 0;
+    min-height: 28px;
+    font: 480 18px/1.4 var(--workspace-sans);
+    letter-spacing: -0.14px;
+  }
+
+  .yard-select-wrap > span {
+    margin-top: 0;
+    font: 330 14px/1.45 var(--workspace-sans);
+    letter-spacing: -0.14px;
+  }
+
+  .yard-select-wrap > svg:first-of-type {
+    width: 22px;
+    height: 22px;
+    margin-top: 3px;
+  }
+
+  .yard-select-wrap > svg:last-of-type {
+    width: 16px;
+    height: 16px;
+    margin-top: 6px;
+  }
+
+  :is(.eyebrow, .overview-eyebrow, .navigation-label, .intake-label, .section-number) {
     color: black;
     font: 400 12px/1.3 var(--workspace-mono);
     text-transform: uppercase;
@@ -179,7 +251,7 @@
    at an operational scale. The rectangles on the map represent physical slots. */
 .app-shell:not(.page-overview) {
   main {
-    max-width: 1376px;
+    max-width: var(--page-content-width, 1376px);
     padding-inline: 32px;
   }
 
@@ -206,16 +278,8 @@
     letter-spacing: -0.26px;
   }
 
-  .page-heading .eyebrow {
-    margin-bottom: 20px;
-  }
-
   .page-actions:not(:has(.btn)) {
     display: none;
-  }
-
-  .page-actions > .badge {
-    color: black;
   }
 
   .metrics-grid {
@@ -825,6 +889,24 @@
   }
 }
 
+@media (min-width: 681px) {
+  .app-shell.sidebar-collapsed {
+    --page-content-width: none;
+
+    .sidebar {
+      display: none;
+    }
+
+    .app-body {
+      margin-left: 0;
+    }
+
+    .desktop-sidebar-toggle {
+      display: inline-grid;
+    }
+  }
+}
+
 .app-shell.page-containers {
   --workspace-color: var(--block-mint);
 }
@@ -986,5 +1068,19 @@
       white-space: normal;
       justify-content: center;
     }
+  }
+}
+
+.app-shell.page-map {
+  .page-heading h1 {
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 1.05;
+    letter-spacing: -1.6px;
+  }
+}
+
+@media (min-width: 641px) {
+  .app-shell.page-map .page-heading {
+    padding-block: 64px 48px;
   }
 }

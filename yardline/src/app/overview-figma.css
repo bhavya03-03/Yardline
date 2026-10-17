@@ -1,7 +1,7 @@
 /* Overview layout. Shared tokens and controls live in figma-workspace.css. */
 .app-shell.page-overview {
   main {
-    max-width: 1376px;
+    max-width: var(--page-content-width, 1376px);
     padding-inline: 48px;
   }
 
@@ -16,10 +16,6 @@
     border: 0;
     background: white;
     overflow: visible;
-  }
-
-  .overview-hero .eyebrow {
-    margin-bottom: 24px;
   }
 
   .overview-hero h1 {
@@ -54,17 +50,6 @@
     justify-content: flex-start;
     width: 100%;
     gap: 12px;
-  }
-
-  .overview-hero .page-actions > .badge {
-    flex-basis: auto;
-    padding: 8px 12px;
-    margin-inline-start: auto;
-    color: black;
-    background: var(--surface-raised);
-    border-radius: 50px;
-    font-size: 12px;
-    font-weight: 400;
   }
 
   .metrics-grid {
@@ -426,10 +411,6 @@
     .panel-heading .btn {
       width: 100%;
       justify-content: center;
-    }
-
-    .overview-hero .page-actions > .badge {
-      display: none;
     }
 
     .metric {

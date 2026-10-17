@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type FormEvent, type Ref } from 'react';
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -85,6 +85,7 @@ export default function YardlineApp() {
   const [query, setQuery] = useState(''),
     [searchOpen, setSearchOpen] = useState(false),
     [mobileNav, setMobileNav] = useState(false),
+    [sidebarCollapsed, setSidebarCollapsed] = useState(false),
     [toast, setToast] = useState('');
   const [tier, setTier] = useState(1),
     [blockId, setBlockId] = useState<string | null>(null),
@@ -98,6 +99,9 @@ export default function YardlineApp() {
     } | null>(null),
     [preferredSlot, setPreferredSlot] = useState<string | null>(null);
   const searchRef = useRef<HTMLDivElement>(null),
+    sidebarToggleRef = useRef<HTMLButtonElement>(null),
+    sidebarExpandRef = useRef<HTMLButtonElement>(null),
+    mobileMenuRef = useRef<HTMLButtonElement>(null),
     requestId = useRef(0),
     mutationPending = useRef(false);
   const load = useCallback(async (yardId?: string, quiet = false) => {
@@ -166,6 +170,19 @@ export default function YardlineApp() {
     setPage(next);
     setMobileNav(false);
     setSearchOpen(false);
+  }
+  function collapseSidebar() {
+    if (window.matchMedia('(max-width: 680px)').matches) {
+      setMobileNav(false);
+      requestAnimationFrame(() => mobileMenuRef.current?.focus());
+    } else {
+      setSidebarCollapsed(true);
+      requestAnimationFrame(() => sidebarExpandRef.current?.focus());
+    }
+  }
+  function expandSidebar() {
+    setSidebarCollapsed(false);
+    requestAnimationFrame(() => sidebarToggleRef.current?.focus());
   }
   function selectSlot(slot: Slot) {
     setSelectedSlotId(slot.id);
@@ -264,7 +281,7 @@ export default function YardlineApp() {
     );
   const meta = pageMeta[page];
   return (
-    <div className={`app-shell page-${page}`}>
+    <div className={`app-shell page-${page}${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
       <a className="skip-link" href="#main-content">
         Skip to main content
       </a>
@@ -275,9 +292,9 @@ export default function YardlineApp() {
           onClick={() => setMobileNav(false)}
         />
       ) : null}
-      <aside className={`sidebar ${mobileNav ? 'is-open' : ''}`}>
-        <Brand />
-        <div className="workspace-label">ACTIVE FACILITY</div>
+      <aside id="workspace-sidebar" className={`sidebar ${mobileNav ? 'is-open' : ''}`}>
+        <Brand onToggle={collapseSidebar} toggleRef={sidebarToggleRef} />
+        <div className="workspace-label">Active facility</div>
         <div className="yard-select-wrap">
           <Warehouse size={19} />
           <select
@@ -368,9 +385,24 @@ export default function YardlineApp() {
       </aside>
       <div className="app-body">
         <header className="topbar">
+          {sidebarCollapsed ? (
+            <button
+              className="brand-toggle desktop-sidebar-toggle"
+              ref={sidebarExpandRef}
+              aria-label="Expand sidebar"
+              aria-controls="workspace-sidebar"
+              aria-expanded={false}
+              onClick={expandSidebar}
+            >
+              <BrandMark />
+            </button>
+          ) : null}
           <button
             className="icon-button mobile-menu"
+            ref={mobileMenuRef}
             aria-label="Open navigation"
+            aria-controls="workspace-sidebar"
+            aria-expanded={mobileNav}
             onClick={() => setMobileNav(true)}
           >
             <Menu size={21} />
@@ -478,9 +510,6 @@ export default function YardlineApp() {
         <main id="main-content">
           <div className={`page-heading ${page === 'overview' ? 'overview-hero' : ''}`}>
             <div className="page-heading-copy">
-              <div className="eyebrow">
-                {data.yard.name.toUpperCase()} <span>/</span> {data.yard.code}
-              </div>
               <h1>{meta.title}</h1>
               <p>{meta.subtitle}</p>
               {page === 'overview' ? (
@@ -508,7 +537,6 @@ export default function YardlineApp() {
                   Refresh
                 </Button>
               ) : null}
-              <Badge tone="blue">{data.yard.is_demo ? 'Demonstration yard' : data.yard.code}</Badge>
             </div>
           </div>
           {loadError ? (
@@ -736,18 +764,41 @@ export default function YardlineApp() {
   );
 }
 
-function Brand() {
+function BrandMark() {
+  return (
+    <span className="brand-mark" aria-hidden="true">
+      <span />
+      <span />
+      <span />
+      <span />
+    </span>
+  );
+}
+function Brand({
+  onToggle,
+  toggleRef,
+}: {
+  onToggle?: () => void;
+  toggleRef?: Ref<HTMLButtonElement>;
+}) {
   return (
     <div className="brand">
-      <span className="brand-mark">
-        <span />
-        <span />
-        <span />
-        <span />
-      </span>
+      {onToggle ? (
+        <button
+          className="brand-toggle"
+          ref={toggleRef}
+          aria-label="Collapse sidebar"
+          aria-controls="workspace-sidebar"
+          aria-expanded={true}
+          onClick={onToggle}
+        >
+          <BrandMark />
+        </button>
+      ) : (
+        <BrandMark />
+      )}
       <span>
         <strong>YARDLINE</strong>
-        <small>TERMINAL WORKSPACE</small>
       </span>
     </div>
   );
