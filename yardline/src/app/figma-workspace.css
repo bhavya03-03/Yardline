@@ -1,0 +1,969 @@
+/* figma.md: shared monochrome chrome, variable-weight type, pill actions,
+   and one pastel workspace surface per view. Geist is the open font substitute. */
+.app-shell {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-inset: #ffffff;
+  --surface-raised: #f5f5f5;
+  --surface-hover: #f5f5f5;
+  --text: #000000;
+  --muted: #000000;
+  --subtle: #000000;
+  --accent: #000000;
+  --accent-hover: #242424;
+  --accent-soft: #f5f5f5;
+  --accent-border: #b4b4b4;
+  --border: #e5e5e5;
+  --border-strong: #b4b4b4;
+  --block-lime: #d5f58d;
+  --block-lilac: #e6dcff;
+  --block-cream: #fff5df;
+  --block-mint: #d9f0e5;
+  --section-gap: 96px;
+  --workspace-color: var(--block-lime);
+  font-weight: 330;
+  font-kerning: normal;
+
+  :is(.btn, .nav-item, .text-button, .table-id, .location-link) {
+    border-radius: 50px;
+  }
+
+  .btn {
+    min-height: 48px;
+    padding: 10px 20px;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 480;
+    letter-spacing: -0.1px;
+    box-shadow: none;
+  }
+
+  :is(.btn-secondary, .btn-ghost) {
+    color: var(--text);
+    background: var(--surface);
+    border-color: transparent;
+  }
+
+  :is(.icon-button, .toolbar-avatar) {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    color: var(--text);
+    background: var(--surface-raised);
+    border-color: transparent;
+  }
+
+  :is(.nav-item, .toolbar-actions .btn) {
+    font-size: 14px;
+    font-weight: 480;
+  }
+
+  .nav-item.active {
+    color: white;
+    background: black;
+    border-color: black;
+  }
+
+  .nav-item.active .nav-active-dot {
+    background: white;
+  }
+
+  .nav-item.active .nav-count {
+    color: white;
+    border-color: #ffffff66;
+    background: transparent;
+  }
+
+  .toolbar-actions .btn-primary {
+    color: black;
+    border-color: var(--border);
+    background: white;
+  }
+
+  .toolbar-actions .btn-primary:hover:not(:disabled) {
+    background: var(--surface-raised);
+  }
+
+  :is(.global-search, .yard-select-wrap, .inline-search) {
+    border-radius: 8px;
+  }
+
+  :is(.global-search input, .yard-select-wrap select) {
+    font-weight: 330;
+  }
+
+  :is(
+    .eyebrow,
+    .overview-eyebrow,
+    .workspace-label,
+    .navigation-label,
+    .intake-label,
+    .section-number
+  ) {
+    color: black;
+    font: 400 12px/1.3 var(--workspace-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  :is(.inline-search, .global-search):focus-within {
+    outline: 2px solid black;
+    outline-offset: 3px;
+    border-color: black;
+  }
+
+  :is(button, a, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid black;
+    outline-offset: 3px;
+  }
+
+  :is(input, select, textarea):focus-visible {
+    border-color: black;
+  }
+
+  .modal {
+    margin: auto;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px #0000001a;
+  }
+
+  .modal::backdrop {
+    background: #00000099;
+  }
+
+  .modal-head h2 {
+    font: 540 26px/1.35 var(--workspace-sans);
+    letter-spacing: -0.26px;
+  }
+
+  .modal-head p {
+    font: 330 14px/1.45 var(--workspace-sans);
+  }
+
+  .modal-footer {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .modal-footer .btn {
+    font-size: 16px;
+  }
+
+  :is(.field > label, .modal .checkbox-label) {
+    font-weight: 480;
+  }
+
+  .field :is(input:not([type='checkbox']), select, textarea) {
+    min-height: 48px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.45;
+    font-weight: 330;
+  }
+}
+
+/* Workflow pages retain their working layouts and use the same visual grammar
+   at an operational scale. The rectangles on the map represent physical slots. */
+.app-shell:not(.page-overview) {
+  main {
+    max-width: 1376px;
+    padding-inline: 32px;
+  }
+
+  .page-heading {
+    margin-bottom: 32px;
+    padding-block: 48px 32px;
+    align-items: flex-end;
+    gap: 24px;
+  }
+
+  .page-heading h1 {
+    font: 340 64px/1.1 var(--workspace-sans);
+    letter-spacing: -0.96px;
+    text-wrap: balance;
+  }
+
+  .page-heading p {
+    max-width: 640px;
+    margin-top: 20px;
+    color: black;
+    font-size: 18px;
+    line-height: 1.45;
+    font-weight: 320;
+    letter-spacing: -0.26px;
+  }
+
+  .page-heading .eyebrow {
+    margin-bottom: 20px;
+  }
+
+  .page-actions:not(:has(.btn)) {
+    display: none;
+  }
+
+  .page-actions > .badge {
+    color: black;
+  }
+
+  .metrics-grid {
+    margin-bottom: 40px;
+    border-inline: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .metric {
+    padding: 24px;
+    background: white;
+  }
+
+  .metric-top {
+    color: black;
+    font-size: 14px;
+    font-weight: 480;
+    line-height: 1.45;
+  }
+
+  .metric-icon {
+    display: none;
+  }
+
+  .metric-value {
+    margin-top: 16px;
+    font: 340 48px/1.1 var(--workspace-sans);
+    letter-spacing: -0.96px;
+  }
+
+  .metric p {
+    color: black;
+    font-size: 12px;
+    font-weight: 330;
+    line-height: 1.45;
+  }
+
+  .panel {
+    border-radius: 24px;
+    box-shadow: none;
+  }
+
+  :is(.panel-heading, .map-panel-heading, .intake-section-heading) {
+    background: transparent;
+    border-color: var(--border);
+    gap: 16px;
+  }
+
+  .panel-heading h2,
+  .config-form > h2 {
+    font: 540 26px/1.35 var(--workspace-sans);
+    letter-spacing: -0.26px;
+  }
+
+  .panel-heading p {
+    color: black;
+    font-size: 16px;
+    font-weight: 330;
+    line-height: 1.45;
+    margin-top: 8px;
+  }
+
+  :is(.field > label, .checkbox-label, .inline-notice) {
+    font-size: 16px;
+    line-height: 1.45;
+    letter-spacing: -0.14px;
+  }
+
+  :is(.field > small, .cell-secondary, .pagination, .muted) {
+    color: black;
+    font-weight: 330;
+  }
+
+  :is(
+    .table-id,
+    .location-link,
+    .container-summary h3,
+    .location-address strong,
+    .intake-target-code
+  ) {
+    font-family: var(--workspace-sans);
+    font-weight: 480;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :is(.table-id, .location-link) {
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .table-scroll {
+    background: white;
+    border-radius: 8px;
+  }
+
+  .table-scroll :is(th, td) {
+    padding: 16px;
+    color: black;
+    font-size: 14px;
+    font-weight: 330;
+  }
+
+  .table-scroll th {
+    font: 400 12px/1.3 var(--workspace-mono);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    background: white;
+  }
+
+  .table-scroll :is(.mono, .table-id, .location-link) {
+    font-family: var(--workspace-sans);
+    font-size: 14px;
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :is(.badge-neutral, .badge-blue, .badge-violet, .badge-green) {
+    color: black;
+    background: white;
+    border-color: var(--border);
+  }
+
+  .badge {
+    border-radius: 50px;
+    font-weight: 480;
+    font-size: 11px;
+  }
+
+  .table-toolbar {
+    padding: 16px 0;
+    border: 0;
+    gap: 12px;
+  }
+
+  .table-toolbar :is(.inline-search, select) {
+    min-height: 48px;
+    background: white;
+    border-radius: 8px;
+  }
+
+  .inline-search input {
+    font-size: 16px;
+    font-weight: 330;
+  }
+
+  .table-toolbar > select {
+    padding: 12px 30px 12px 14px;
+    font-size: 14px;
+  }
+
+  .pagination {
+    padding: 24px 0 0;
+    border: 0;
+    color: black;
+    font-size: 14px;
+  }
+
+  .pagination .btn {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  .row-actions {
+    gap: 8px;
+  }
+
+  /* One lime surface carries the working map; its inspector remains white. */
+  .map-layout {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 24px;
+  }
+
+  .map-panel {
+    padding: 24px;
+    border: 0;
+    background: var(--block-lime);
+  }
+
+  :is(.map-panel-heading, .map-toolbar) {
+    padding: 0 0 24px;
+    border: 0;
+    background: transparent;
+  }
+
+  .map-panel-heading {
+    flex-wrap: wrap;
+  }
+
+  .map-panel-heading h2 {
+    font: 540 26px/1.35 var(--workspace-sans);
+    letter-spacing: -0.26px;
+  }
+
+  .heading-marker {
+    display: none;
+  }
+
+  .map-record-note {
+    padding: 0;
+    border: 0;
+    color: black;
+    font-size: 12px;
+    font-weight: 330;
+  }
+
+  .map-controls select {
+    min-height: 44px;
+    background: white;
+    border-color: transparent;
+    border-radius: 50px;
+    padding-inline: 16px 32px;
+    font-weight: 480;
+  }
+
+  .block-tabs {
+    padding: 4px;
+    gap: 4px;
+    background: white;
+    border: 0;
+    border-radius: 50px;
+  }
+
+  .block-tabs button {
+    min-height: 44px;
+    padding: 8px 16px;
+    color: black;
+    background: white;
+    border: 0;
+    border-radius: 50px;
+    font-weight: 480;
+    font-size: 14px;
+  }
+
+  .block-tabs button.active {
+    color: white;
+    background: black;
+  }
+
+  .tier-selector {
+    color: black;
+    gap: 8px;
+  }
+
+  .tier-selector button {
+    min-width: 40px;
+    min-height: 40px;
+    border: 0;
+    border-radius: 50px;
+    color: black;
+    background: white;
+    font: 480 14px/1.45 var(--workspace-sans);
+  }
+
+  .tier-selector button.active {
+    color: white;
+    background: black;
+  }
+
+  .map-panel .yard-canvas {
+    width: 100%;
+    margin: 0;
+    background: white;
+    border: 0;
+    border-radius: 8px;
+  }
+
+  .map-panel .map-legend {
+    padding: 24px 0;
+    gap: 12px 16px;
+  }
+
+  .map-footer {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: black;
+    font-size: 12px;
+    font-weight: 330;
+  }
+
+  :is(.back-to-yard, .stack-item) {
+    border-radius: 50px;
+    min-height: 44px;
+    font-weight: 480;
+  }
+
+  .back-to-yard {
+    background: white;
+  }
+
+  .detail-panel .panel-heading h2 {
+    font: 540 20px/1.35 var(--workspace-sans);
+  }
+
+  .container-summary h3 {
+    font-size: 22px;
+    letter-spacing: -0.26px;
+  }
+
+  .location-address {
+    border-radius: 8px;
+    background: var(--surface-raised);
+  }
+
+  .detail-actions .btn {
+    font-size: 16px;
+  }
+
+  .coordinate-grid strong {
+    font-family: var(--workspace-sans);
+    font-weight: 480;
+  }
+
+  .below-map {
+    margin-top: 32px;
+    gap: 24px;
+  }
+
+  :is(.unassigned-banner, .demo-search-hint) {
+    border-radius: 24px;
+    padding: 24px;
+    background: white;
+    color: black;
+  }
+
+  .unassigned-banner :is(strong, .text-button) {
+    font-size: 14px;
+    font-weight: 480;
+  }
+
+  .unassigned-banner p {
+    font-size: 12px;
+    line-height: 1.45;
+    font-weight: 330;
+  }
+
+  /* The table remains a white reading surface inside one pastel section. */
+  :is(.inventory-panel, .history-panel) {
+    padding: 32px;
+    border: 0;
+    background: var(--workspace-color);
+  }
+
+  :is(.inventory-panel, .history-panel) > .panel-heading {
+    padding: 0 0 16px;
+    border: 0;
+  }
+
+  /* Registration keeps its existing OCR, manifest, and map placement flow. */
+  .intake-workspace {
+    padding: 32px;
+    gap: 24px;
+    border-radius: 24px;
+    background: var(--block-cream);
+  }
+
+  :is(.intake-main, .intake-aside) {
+    gap: 24px;
+    min-width: 0;
+  }
+
+  .intake-section-heading {
+    padding: 24px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .intake-section-heading h2 {
+    font: 540 20px/1.35 var(--workspace-sans);
+    letter-spacing: -0.26px;
+    text-transform: none;
+  }
+
+  .intake-number {
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+    color: white;
+    background: black;
+    border: 0;
+    border-radius: 50%;
+    font: 480 14px/1 var(--workspace-sans);
+  }
+
+  .intake-section-body {
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .intake-workspace .field :is(input, select, textarea) {
+    min-height: 48px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 330;
+  }
+
+  .intake-workspace .container-number-input {
+    font-family: var(--workspace-sans);
+    font-size: 24px;
+    font-weight: 480;
+    letter-spacing: -0.26px;
+  }
+
+  .intake-ocr {
+    padding: 16px;
+    border-radius: 8px;
+    background: var(--surface-raised);
+  }
+
+  .intake-subheading {
+    font-family: var(--workspace-sans);
+    font-size: 14px;
+    font-weight: 480;
+    letter-spacing: -0.14px;
+    text-transform: none;
+  }
+
+  .intake-subheading strong {
+    font-weight: 480;
+  }
+
+  .intake-photo-empty {
+    min-height: 160px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .intake-photo-controls .btn {
+    min-height: 44px;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 480;
+  }
+
+  .equipment-presets {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 8px;
+  }
+
+  .equipment-presets button {
+    min-height: 64px;
+    padding: 12px 8px;
+    border-radius: 50px;
+    font-family: var(--workspace-sans);
+  }
+
+  .equipment-presets button strong {
+    font-family: var(--workspace-sans);
+    font-weight: 480;
+    font-size: 14px;
+  }
+
+  .equipment-presets button span {
+    font-size: 12px;
+    line-height: 1.45;
+    font-weight: 330;
+  }
+
+  .intake-workspace .checkbox-label {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .intake-workspace .form-actions .btn {
+    min-height: 48px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 16px;
+  }
+
+  .intake-matrix-toolbar select {
+    min-height: 48px;
+    font-size: 14px;
+  }
+
+  .intake-protocol {
+    font-size: 14px;
+    font-weight: 330;
+    line-height: 1.45;
+  }
+
+  /* Administration shares the same form and pill-toggle grammar. */
+  .config-layout {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 24px;
+  }
+
+  .config-panel {
+    padding: 32px;
+    border: 0;
+    background: var(--block-lime);
+  }
+
+  .tabs {
+    padding: 4px;
+    gap: 4px;
+    background: white;
+    border: 0;
+    border-radius: 50px;
+    overflow-x: auto;
+  }
+
+  .tabs button {
+    min-height: 48px;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 50px;
+    font-size: 14px;
+    line-height: 1.45;
+    font-weight: 480;
+    white-space: nowrap;
+  }
+
+  .tabs button.active {
+    color: white;
+    background: black;
+    border: 0;
+  }
+
+  .config-form {
+    padding: 32px 0 0;
+  }
+
+  .config-form > .muted {
+    font-size: 16px;
+    font-weight: 330;
+    line-height: 1.45;
+  }
+
+  .config-summary {
+    gap: 12px;
+  }
+
+  .config-summary > div {
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  .config-summary strong {
+    font: 340 32px/1.1 var(--workspace-sans);
+  }
+
+  .settings-layout {
+    padding: 32px;
+    gap: 24px;
+    background: var(--block-lilac);
+    border-radius: 24px;
+  }
+
+  .settings-panel .panel-heading {
+    flex-wrap: wrap;
+  }
+
+  .settings-panel .panel-heading h2 {
+    font-size: 24px;
+  }
+
+  .settings-body {
+    padding: 24px;
+    color: black;
+    font-size: 16px;
+    line-height: 1.45;
+    font-weight: 330;
+  }
+
+  .settings-data {
+    padding-inline: 24px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .settings-data :is(dt, dd) {
+    color: black;
+    font-weight: 330;
+  }
+
+  .role-descriptions strong,
+  .operational-notes strong {
+    font-weight: 540;
+  }
+
+  .workspace-footer {
+    margin-top: 48px;
+    padding-block: 32px;
+    color: black;
+    font-size: 12px;
+    font-weight: 330;
+  }
+}
+
+.app-shell.page-containers {
+  --workspace-color: var(--block-mint);
+}
+
+.app-shell.page-history {
+  --workspace-color: var(--block-lilac);
+}
+
+@media (max-width: 1200px) {
+  .app-shell:not(.page-overview) {
+    .page-heading h1 {
+      font-size: 56px;
+    }
+
+    :is(.map-layout, .config-layout) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .intake-workspace {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .settings-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}
+
+@media (max-width: 960px) {
+  .app-shell:not(.page-overview) {
+    main {
+      padding-inline: 24px;
+    }
+
+    .panel-heading {
+      flex-wrap: wrap;
+    }
+
+    .page-heading {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    :is(.inventory-panel, .history-panel, .intake-workspace, .config-panel, .settings-layout) {
+      padding: 24px;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    :is(.icon-button, .toolbar-avatar) {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+    }
+
+    .modal-footer .btn {
+      white-space: normal;
+    }
+  }
+
+  .app-shell:not(.page-overview) {
+    .page-heading {
+      padding-block: 32px 24px;
+      margin-bottom: 24px;
+    }
+
+    .page-heading h1 {
+      font-size: 48px;
+      letter-spacing: -0.96px;
+    }
+
+    .page-heading .page-actions {
+      justify-content: flex-start;
+    }
+
+    .page-heading .page-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .metric {
+      padding: 20px 12px;
+    }
+
+    .metric-value {
+      font-size: 40px;
+    }
+
+    :is(
+      .inventory-panel,
+      .history-panel,
+      .intake-workspace,
+      .config-panel,
+      .settings-layout,
+      .map-panel
+    ) {
+      width: calc(100% + 48px);
+      margin-inline: -24px;
+      padding: 24px;
+      border-radius: 0;
+    }
+
+    .map-toolbar {
+      gap: 16px;
+    }
+
+    .block-tabs {
+      width: 100%;
+    }
+
+    .block-tabs button {
+      padding-inline: 12px;
+    }
+
+    .tier-selector button {
+      min-width: 44px;
+      min-height: 44px;
+    }
+
+    .intake-aside {
+      display: flex;
+    }
+
+    .intake-photo-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .table-toolbar > select {
+      max-width: none;
+      margin-left: 0;
+    }
+
+    .settings-body,
+    .settings-data {
+      padding-inline: 16px;
+    }
+
+    .settings-data > div {
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .settings-data dd {
+      text-align: start;
+    }
+
+    .equipment-presets {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tabs {
+      border-radius: 24px;
+    }
+
+    .config-form .btn {
+      width: 100%;
+      white-space: normal;
+      justify-content: center;
+    }
+  }
+}
