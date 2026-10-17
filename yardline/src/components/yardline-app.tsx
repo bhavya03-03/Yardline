@@ -480,15 +480,29 @@ export default function YardlineApp() {
           </button>
         </header>
         <main id="main-content">
-          <div className="page-heading">
+          <div className={`page-heading ${page === 'overview' ? 'overview-hero' : ''}`}>
+            {page === 'overview' ? <div className="overview-mesh" aria-hidden="true" /> : null}
             <div className="page-heading-copy">
               <div className="eyebrow">
                 {data.yard.name.toUpperCase()} <span>/</span> {data.yard.code}
               </div>
               <h1>{meta.title}</h1>
               <p>{meta.subtitle}</p>
+              {page === 'overview' ? (
+                <div className="overview-hero-note">
+                  <span>Operator-confirmed positions</span>
+                  <span>
+                    {data.blocks.length} storage blocks · {data.yard.name}
+                  </span>
+                </div>
+              ) : null}
             </div>
             <div className="page-actions">
+              {page === 'overview' ? (
+                <Button onClick={() => navigate('map')}>
+                  View yard map <ArrowUpRight size={16} />
+                </Button>
+              ) : null}
               {page === 'map' || page === 'overview' ? (
                 <Button
                   variant="secondary"
@@ -828,8 +842,9 @@ function Overview({
         <section className="panel overview-map">
           <div className="panel-heading">
             <div>
-              <h2>North to south. All accounted for.</h2>
-              <p>Ground-level view · Tier 1</p>
+              <span className="overview-eyebrow">Yard visibility</span>
+              <h2>Your yard, at a glance.</h2>
+              <p>Recorded storage positions · Ground level · Tier 1</p>
             </div>
             <Button variant="ghost" onClick={onMap}>
               Open yard map
@@ -853,7 +868,10 @@ function Overview({
         </section>
         <section className="panel occupancy-panel">
           <div className="panel-heading">
-            <h2>Storage by block</h2>
+            <div>
+              <span className="overview-eyebrow">02 / Capacity</span>
+              <h2>Storage by block</h2>
+            </div>
             <Layers3 size={17} />
           </div>
           <div className="occupancy-blocks">
@@ -897,6 +915,7 @@ function Overview({
       <section className="panel recent-panel">
         <div className="panel-heading">
           <div>
+            <span className="overview-eyebrow">03 / Movements</span>
             <h2>Recent yard activity</h2>
             <p>From recorded operations, with a permanent movement history.</p>
           </div>
@@ -909,6 +928,7 @@ function Overview({
       </section>
       <div className="overview-attention">
         <div className="panel">
+          <span className="overview-eyebrow">04 / Placement queue</span>
           <h3>
             <ContainerIcon size={18} />
             Awaiting placement <Badge tone="amber">{data.metrics.unassigned}</Badge>
@@ -927,6 +947,7 @@ function Overview({
             ))}
         </div>
         <div className="panel">
+          <span className="overview-eyebrow">05 / Location review</span>
           <h3>
             <ShieldCheck size={18} />
             Location checks <Badge tone="amber">{data.metrics.attention}</Badge>
