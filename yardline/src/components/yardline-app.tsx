@@ -481,7 +481,6 @@ export default function YardlineApp() {
         </header>
         <main id="main-content">
           <div className={`page-heading ${page === 'overview' ? 'overview-hero' : ''}`}>
-            {page === 'overview' ? <div className="overview-mesh" aria-hidden="true" /> : null}
             <div className="page-heading-copy">
               <div className="eyebrow">
                 {data.yard.name.toUpperCase()} <span>/</span> {data.yard.code}
@@ -926,50 +925,59 @@ function Overview({
         </div>
         <MovementRows movements={recent} data={data} onLocate={onLocate} />
       </section>
-      <div className="overview-attention">
-        <div className="panel">
-          <span className="overview-eyebrow">04 / Placement queue</span>
-          <h3>
-            <ContainerIcon size={18} />
-            Awaiting placement <Badge tone="amber">{data.metrics.unassigned}</Badge>
-          </h3>
-          {data.containers
-            .filter((c) => c.status === 'unassigned')
-            .slice(0, 4)
-            .map((c) => (
-              <button className="attention-row" onClick={() => onLocate(c)} key={c.id}>
-                <strong>{c.number}</strong>
-                <span>
-                  {c.owner} · {c.size} ft
-                </span>
-                <ArrowUpRight size={15} />
-              </button>
-            ))}
+      <section className="overview-attention-section" aria-labelledby="overview-review-heading">
+        <div className="panel-heading">
+          <div>
+            <span className="overview-eyebrow">04 / Next up</span>
+            <h2 id="overview-review-heading">A place for every container.</h2>
+            <p>Confirm placements and keep recorded locations up to date.</p>
+          </div>
         </div>
-        <div className="panel">
-          <span className="overview-eyebrow">05 / Location review</span>
-          <h3>
-            <ShieldCheck size={18} />
-            Location checks <Badge tone="amber">{data.metrics.attention}</Badge>
-          </h3>
-          {data.containers
-            .filter(
-              (c) =>
-                c.status === 'stored' &&
-                (!c.verified_at ||
-                  new Date(data.generatedAt).getTime() - new Date(c.verified_at).getTime() >
-                    86400000),
-            )
-            .slice(0, 4)
-            .map((c) => (
-              <button className="attention-row" onClick={() => onLocate(c)} key={c.id}>
-                <strong>{c.number}</strong>
-                <span>{relative(c.verified_at)}</span>
-                <ArrowUpRight size={15} />
-              </button>
-            ))}
+        <div className="overview-attention">
+          <div className="panel">
+            <span className="overview-eyebrow">Placement queue</span>
+            <h3>
+              <ContainerIcon size={18} />
+              Awaiting placement <Badge tone="amber">{data.metrics.unassigned}</Badge>
+            </h3>
+            {data.containers
+              .filter((c) => c.status === 'unassigned')
+              .slice(0, 4)
+              .map((c) => (
+                <button className="attention-row" onClick={() => onLocate(c)} key={c.id}>
+                  <strong>{c.number}</strong>
+                  <span>
+                    {c.owner} · {c.size} ft
+                  </span>
+                  <ArrowUpRight size={15} />
+                </button>
+              ))}
+          </div>
+          <div className="panel">
+            <span className="overview-eyebrow">Location review</span>
+            <h3>
+              <ShieldCheck size={18} />
+              Location checks <Badge tone="amber">{data.metrics.attention}</Badge>
+            </h3>
+            {data.containers
+              .filter(
+                (c) =>
+                  c.status === 'stored' &&
+                  (!c.verified_at ||
+                    new Date(data.generatedAt).getTime() - new Date(c.verified_at).getTime() >
+                      86400000),
+              )
+              .slice(0, 4)
+              .map((c) => (
+                <button className="attention-row" onClick={() => onLocate(c)} key={c.id}>
+                  <strong>{c.number}</strong>
+                  <span>{relative(c.verified_at)}</span>
+                  <ArrowUpRight size={15} />
+                </button>
+              ))}
+          </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import './workspace.css';
+import './overview-figma.css';
 export const metadata: Metadata = {
   title: 'Yardline — A place for every container',
   description:

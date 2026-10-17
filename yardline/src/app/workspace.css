@@ -1,7 +1,7 @@
 @import '@fontsource-variable/geist';
 @import '@fontsource-variable/geist-mono';
 
-/* Shared workspace design system from design.md; the mesh stays in Overview. */
+/* Shared workspace design system from design.md. Overview has its own theme. */
 .app-shell {
   --bg: #fafafa;
   --surface: #ffffff;
