@@ -1,5 +1,5 @@
 'use client';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
 import { ArrowUpRight, ChevronLeft, Layers3, LocateFixed, MapPin, ShieldAlert } from 'lucide-react';
 import type { Block, Container, Slot, Snapshot } from '@/lib/types';
@@ -17,6 +17,7 @@ export function YardMap({
   compact = false,
   pickMode = false,
   variant = 'standard',
+  fitToPanel = false,
 }: {
   data: Snapshot;
   tier: number;
@@ -28,7 +29,20 @@ export function YardMap({
   compact?: boolean;
   pickMode?: boolean;
   variant?: 'standard' | 'readable';
+  fitToPanel?: boolean;
 }) {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [viewportRatio, setViewportRatio] = useState(0);
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!fitToPanel || blockId || !svg) return;
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      if (height > 0) setViewportRatio(width / height);
+    });
+    observer.observe(svg);
+    return () => observer.disconnect();
+  }, [fitToPanel, blockId]);
   const occupancy = useMemo(
     () =>
       new Map(data.containers.filter((c) => c.current_slot_id).map((c) => [c.current_slot_id!, c])),
@@ -38,9 +52,17 @@ export function YardMap({
   const blocks = block ? [block] : data.blocks;
   const slots = data.slots.filter((s) => s.tier === tier && (!block || s.block_id === block.id));
   const boundary = JSON.parse(data.yard.boundary) as number[][];
+  // Fit the schematic to the panel by adapting row heights, keeping text undistorted.
+  const yScale =
+    fitToPanel && !block && viewportRatio > 0
+      ? Math.min(1, (data.yard.width + 6) / (viewportRatio * (data.yard.height + 6)))
+      : 1;
+  const projectY = (value: number) => value * yScale;
+  const labelScale = Math.min(1, yScale / 0.8);
+  const showVerification = variant !== 'readable';
   const viewBox = block
     ? `${block.x - 9} ${block.y - 9} ${block.width + 18} ${block.height + 18}`
-    : `-3 -3 ${data.yard.width + 6} ${data.yard.height + 6}`;
+    : `-3 ${projectY(-3)} ${data.yard.width + 6} ${projectY(data.yard.height + 6)}`;
   const selected = data.slots.find((s) => s.id === selectedSlotId);
   const statusOf = (s: Slot) => (occupancy.has(s.id) ? 'occupied' : s.status);
   const renderBlockGrid = (block: Block) => {
@@ -114,7 +136,9 @@ export function YardMap({
                         <strong>{container.number.slice(0, 4)}</strong>
                         <span>{container.number.slice(4)}</span>
                         <small>{container.size} ft</small>
-                        {attention ? <i aria-label="Needs verification">!</i> : null}
+                        {attention && showVerification ? (
+                          <i aria-label="Needs verification">!</i>
+                        ) : null}
                       </>
                     ) : (
                       <>
@@ -179,7 +203,9 @@ export function YardMap({
         <span>↑</span>N
       </span>
       <svg
+        ref={svgRef}
         className="yard-svg"
+        style={{ '--yard-label-scale': labelScale } as CSSProperties}
         viewBox={viewBox}
         aria-label={`${data.yard.name} storage map, tier ${tier}`}
         role="group"
@@ -211,7 +237,7 @@ export function YardMap({
                     [0, data.yard.height],
                   ]
               )
-                .map((p) => p.join(','))
+                .map(([x, y]) => `${x},${projectY(y)}`)
                 .join(' ')}
               className="yard-boundary"
             />
@@ -219,7 +245,7 @@ export function YardMap({
               x="0"
               y="0"
               width={data.yard.width}
-              height={data.yard.height}
+              height={projectY(data.yard.height)}
               fill="url(#yard-dots)"
               opacity=".5"
             />
@@ -227,24 +253,28 @@ export function YardMap({
               <g key={z.id} className={`map-zone zone-${z.kind}`}>
                 <rect
                   x={z.x}
-                  y={z.y}
+                  y={projectY(z.y)}
                   width={z.width}
-                  height={z.height}
+                  height={projectY(z.height)}
                   rx=".6"
                   fill={z.kind === 'restricted' ? 'url(#restricted-hatch)' : undefined}
                 />
                 {z.height > z.width ? (
                   <text
                     x={z.x + z.width / 2}
-                    y={z.y + z.height / 2}
+                    y={projectY(z.y + z.height / 2)}
                     textAnchor="middle"
-                    transform={`rotate(-90 ${z.x + z.width / 2} ${z.y + z.height / 2})`}
+                    transform={`rotate(-90 ${z.x + z.width / 2} ${projectY(z.y + z.height / 2)})`}
                   >
                     {z.label}
                   </text>
                 ) : (
                   <>
-                    <text x={z.x + z.width / 2} y={z.y + z.height / 2 + 1} textAnchor="middle">
+                    <text
+                      x={z.x + z.width / 2}
+                      y={projectY(z.y + z.height / 2) + labelScale}
+                      textAnchor="middle"
+                    >
                       {z.kind === 'road' ? '←   ' : ''}
                       {z.label}
                       {z.kind === 'road' ? '   →' : ''}
@@ -253,8 +283,8 @@ export function YardMap({
                       <line
                         x1={z.x + 3}
                         x2={z.x + z.width - 3}
-                        y1={z.y + z.height - 2}
-                        y2={z.y + z.height - 2}
+                        y1={projectY(z.y + z.height - 2)}
+                        y2={projectY(z.y + z.height - 2)}
                         stroke="var(--border-strong)"
                         strokeWidth=".3"
                         strokeDasharray="2 2"
@@ -273,9 +303,9 @@ export function YardMap({
             <g key={b.id}>
               <rect
                 x={b.x - 1.8}
-                y={b.y - 2}
+                y={projectY(b.y - 2)}
                 width={b.width + 3.6}
-                height={b.height + 3.5}
+                height={projectY(b.height + 3.5)}
                 className="block-outline"
                 rx="1.4"
               />
@@ -292,10 +322,15 @@ export function YardMap({
                   }
                 }}
               >
-                <text x={b.x} y={b.y - 4}>
+                <text x={b.x} y={projectY(b.y - 4)}>
                   {b.code} <tspan className="block-subtitle"> / {b.name}</tspan>
                 </text>
-                <text x={b.x + b.width} y={b.y - 4} textAnchor="end" className="block-count">
+                <text
+                  x={b.x + b.width}
+                  y={projectY(b.y - 4)}
+                  textAnchor="end"
+                  className="block-count"
+                >
                   {filled} /{' '}
                   {Math.min(
                     b.capacity_limit,
@@ -313,10 +348,12 @@ export function YardMap({
                     textAnchor="end"
                     x={b.x - 2.7}
                     y={
-                      b.y +
-                      ((r.ordinal - 0.5) * b.height) /
-                        data.rows.filter((rr) => rr.block_id === b.id).length +
-                      0.7
+                      projectY(
+                        b.y +
+                          ((r.ordinal - 0.5) * b.height) /
+                            data.rows.filter((rr) => rr.block_id === b.id).length,
+                      ) +
+                      0.7 * labelScale
                     }
                   >
                     {r.code.replace('R0', '')}
@@ -346,6 +383,10 @@ export function YardMap({
                 new Date(data.generatedAt).getTime() - new Date(container.verified_at).getTime() >
                   24 * 3600000),
             dimmed = filter !== 'all' && (filter === 'attention' ? !attention : status !== filter);
+          const markerRadius = (variant === 'readable' ? 1.7 : 1.1) * labelScale;
+          const markerX = slot.x + w - 1 - markerRadius;
+          const markerY = projectY(slot.y + h / 2);
+          const numberFontSize = Math.min(4.3 * labelScale, (w - 1.6) / 4.7);
           return (
             <g
               key={slot.id}
@@ -369,22 +410,33 @@ export function YardMap({
                 {slot.code} · {container ? container.number : status}
                 {attention ? ' · Verification needed' : ''}
               </title>
-              <rect x={slot.x} y={slot.y} width={w} height={h} rx=".65" />
+              <rect x={slot.x} y={projectY(slot.y)} width={w} height={projectY(h)} rx=".65" />
               {container ? (
                 <>
                   <path
                     className="container-ribs"
                     d={Array.from(
                       { length: 8 },
-                      (_, i) => `M${slot.x + 2 + (i * (w - 4)) / 7},${slot.y + 1} v${h - 2}`,
+                      (_, i) =>
+                        `M${slot.x + 2 + (i * (w - 4)) / 7},${projectY(slot.y + 1)} v${projectY(h - 2)}`,
                     ).join(' ')}
                   />
-                  <text x={slot.x + w / 2} y={slot.y + h / 2 + 0.85} textAnchor="middle">
+                  <text
+                    className={variant === 'readable' ? 'map-slot-number' : undefined}
+                    style={variant === 'readable' ? { fontSize: numberFontSize } : undefined}
+                    x={slot.x + w / 2}
+                    y={projectY(slot.y + h / 2) + 0.85 * labelScale}
+                    textAnchor="middle"
+                  >
                     {container.number.slice(-7)}
                   </text>
                 </>
               ) : (
-                <text x={slot.x + w / 2} y={slot.y + h / 2 + 0.85} textAnchor="middle">
+                <text
+                  x={slot.x + w / 2}
+                  y={projectY(slot.y + h / 2) + 0.85 * labelScale}
+                  textAnchor="middle"
+                >
                   {status === 'available'
                     ? slot.bay_code.replace('BY', '')
                     : status === 'reserved'
@@ -394,23 +446,21 @@ export function YardMap({
                         : '/'}
                 </text>
               )}
-              {attention ? (
-                <circle
-                  cx={slot.x + w - 1.5}
-                  cy={slot.y + 1.5}
-                  r=".85"
-                  fill="var(--warning)"
-                  stroke="var(--surface)"
-                  strokeWidth=".35"
-                />
+              {attention && showVerification ? (
+                <g className="map-verification-marker" aria-hidden="true">
+                  <circle cx={markerX} cy={markerY} r={markerRadius} fill="var(--warning)" />
+                  <text x={markerX} y={markerY} textAnchor="middle" dominantBaseline="central">
+                    !
+                  </text>
+                </g>
               ) : null}
               {isSelected ? (
                 <rect
                   className="selection-ring"
                   x={slot.x - 0.7}
-                  y={slot.y - 0.7}
+                  y={projectY(slot.y - 0.7)}
                   width={w + 1.4}
-                  height={h + 1.4}
+                  height={projectY(h + 1.4)}
                   rx="1.2"
                 />
               ) : null}
@@ -441,7 +491,7 @@ export function YardMap({
     </div>
   );
 }
-export function Legend() {
+export function Legend({ showVerification = true }: { showVerification?: boolean }) {
   return (
     <div className="map-legend">
       <span>
@@ -460,12 +510,14 @@ export function Legend() {
         <i className="legend-restricted" />
         Blocked / restricted
       </span>
-      <span>
-        <i className="legend-attention" aria-hidden="true">
-          !
-        </i>
-        Needs verification
-      </span>
+      {showVerification ? (
+        <span>
+          <i className="legend-attention" aria-hidden="true">
+            !
+          </i>
+          Needs verification
+        </span>
+      ) : null}
     </div>
   );
 }
@@ -536,9 +588,6 @@ export function SlotDetails({
       ) : (
         <>
           <div className="container-summary">
-            <div className={`container-symbol ${container ? 'filled' : ''}`}>
-              <Layers3 size={25} />
-            </div>
             <Badge
               tone={
                 container?.status === 'stored'

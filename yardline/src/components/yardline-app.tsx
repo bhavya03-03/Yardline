@@ -472,10 +472,6 @@ export default function YardlineApp() {
             ) : null}
           </div>
           <div className="toolbar-actions">
-            <Button variant="secondary" onClick={() => navigate('map')}>
-              <Grid2X2 size={15} />
-              Grid view
-            </Button>
             {data.actor.role !== 'viewer' ? (
               <Button
                 onClick={() => {
@@ -521,23 +517,13 @@ export default function YardlineApp() {
                 </div>
               ) : null}
             </div>
-            <div className="page-actions">
-              {page === 'overview' ? (
+            {page === 'overview' ? (
+              <div className="page-actions">
                 <Button onClick={() => navigate('map')}>
                   View yard map <ArrowUpRight size={16} />
                 </Button>
-              ) : null}
-              {page === 'map' || page === 'overview' ? (
-                <Button
-                  variant="secondary"
-                  onClick={() => void load(data.yard.id)}
-                  busy={refreshing}
-                >
-                  <RefreshCw size={15} />
-                  Refresh
-                </Button>
-              ) : null}
-            </div>
+              </div>
+            ) : null}
           </div>
           {loadError ? (
             <div className="inline-notice error global-error" role="alert">
@@ -597,7 +583,6 @@ export default function YardlineApp() {
                       ))}
                     </div>
                     <div className="tier-selector">
-                      <Layers3 size={14} />
                       <span>Stacking tier</span>
                       {Array.from(
                         { length: Math.max(1, ...data.blocks.map((b) => b.max_tiers)) },
@@ -625,9 +610,10 @@ export default function YardlineApp() {
                       onBlock={setBlockId}
                       filter={mapFilter}
                       variant="readable"
+                      fitToPanel
                     />
                   </div>
-                  <Legend />
+                  <Legend showVerification={false} />
                   <div className="map-footer">
                     <span>
                       <ShieldCheck size={14} />
@@ -900,7 +886,7 @@ function Overview({
               variant="readable"
             />
           </div>
-          <Legend />
+          <Legend showVerification={false} />
         </section>
         <section className="panel occupancy-panel">
           <div className="panel-heading">
@@ -1342,7 +1328,7 @@ function MovementRows({
   showNotes?: boolean;
 }) {
   return (
-    <div className="table-scroll">
+    <div className="table-scroll movement-table">
       <table>
         <thead>
           <tr>
@@ -1381,7 +1367,7 @@ function MovementRows({
                           : 'blue'
                   }
                 >
-                  {m.event_type}
+                  <span>{m.event_type}</span>
                 </Badge>
               </td>
               <td className="mono location-cell">

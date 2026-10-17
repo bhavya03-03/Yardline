@@ -8,6 +8,8 @@
 /* Stitch intake workspace: locally hosted type and shared operational colors. */
 :root {
   color-scheme: light;
+  --ui-scale: 0.8;
+  zoom: var(--ui-scale);
   --bg: #faf8ff;
   --surface: #ffffff;
   --surface-inset: #f2f3ff;
@@ -422,7 +424,8 @@ kbd,
   }
 }
 .app-shell {
-  min-height: 100dvh;
+  /* Keep full-height pages at the viewport height after applying the UI scale. */
+  min-height: calc(100dvh / var(--ui-scale));
 }
 .sidebar {
   width: var(--sidebar);
@@ -1120,6 +1123,12 @@ main {
   letter-spacing: 0.1px;
   fill: var(--available-text);
 }
+.map-slot .map-verification-marker text {
+  fill: white;
+  font-size: calc(2.6px * var(--yard-label-scale, 1));
+  font-weight: 700;
+  letter-spacing: 0;
+}
 .map-slot:hover > rect:first-of-type {
   stroke-width: 0.65;
   stroke: var(--accent);
@@ -1380,27 +1389,8 @@ main {
   position: relative;
   padding: 16px;
 }
-.container-symbol {
-  background: var(--surface-inset);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--muted);
-  width: 30px;
-  height: 30px;
-  border-radius: 2px;
-  margin-bottom: 10px;
-}
-.container-symbol.filled {
-  color: var(--text);
-  background: var(--occupied);
-  border-color: var(--occupied-border);
-}
 .container-summary > .badge {
-  position: absolute;
-  top: 20px;
-  right: 16px;
+  margin-bottom: 10px;
 }
 .container-summary h3 {
   letter-spacing: 0.3px;
@@ -2585,7 +2575,7 @@ tbody tr:hover {
   margin-bottom: 5px;
 }
 .startup {
-  min-height: 100dvh;
+  min-height: calc(100dvh / var(--ui-scale));
   background: var(--surface-inset);
 }
 .startup > .brand {
@@ -2594,7 +2584,7 @@ tbody tr:hover {
   top: 10px;
 }
 .startup-content {
-  min-height: 100dvh;
+  min-height: calc(100dvh / var(--ui-scale));
   display: flex;
   flex-direction: column;
   align-items: center;

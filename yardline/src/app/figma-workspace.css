@@ -83,6 +83,30 @@
     font: 700 9px/1 var(--workspace-sans);
   }
 
+  :is(.inventory-panel, .movement-table) td > .badge {
+    position: relative;
+    width: 128px;
+    height: 30px;
+    min-height: 30px;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 20px;
+    line-height: 18px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  :is(.inventory-panel, .movement-table) td > .badge::before {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .movement-table .badge > span {
+    text-box: trim-both cap alphabetic;
+  }
+
   :is(.btn, .nav-item, .text-button, .table-id, .location-link) {
     border-radius: 50px;
   }
@@ -150,6 +174,10 @@
 
   :is(.global-search input, .yard-select-wrap select) {
     font-weight: 330;
+  }
+
+  .global-search {
+    max-width: 480px;
   }
 
   .yard-select-wrap {
@@ -409,22 +437,15 @@
     font-size: 11px;
   }
 
-  :is(.inventory-panel, .history-panel) td > .badge {
-    position: relative;
-    width: 128px;
-    min-height: 28px;
+  .container-summary > .badge {
+    position: static;
+    min-width: 112px;
+    min-height: 32px;
+    margin-bottom: 12px;
+    padding: 6px 16px;
     justify-content: center;
-    padding: 4px 20px;
+    font-size: 13px;
     line-height: 18px;
-    text-align: center;
-    vertical-align: middle;
-  }
-
-  :is(.inventory-panel, .history-panel) td > .badge::before {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
   }
 
   .table-toolbar {

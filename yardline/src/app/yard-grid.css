@@ -72,31 +72,31 @@
   }
 
   .block-label {
-    font-size: 4.3px;
+    font-size: calc(4.3px * var(--yard-label-scale, 1));
     font-weight: 700;
     fill: black;
   }
 
   .block-subtitle {
-    font-size: 3.8px;
+    font-size: calc(3.8px * var(--yard-label-scale, 1));
     font-weight: 480;
     fill: black;
   }
 
   .block-count {
-    font-size: 3.3px;
+    font-size: calc(3.3px * var(--yard-label-scale, 1));
     font-weight: 480;
     fill: black;
   }
 
   .row-label {
-    font-size: 3.5px;
+    font-size: calc(3.5px * var(--yard-label-scale, 1));
     font-weight: 540;
     fill: black;
   }
 
   .map-slot text {
-    font-size: 4.3px;
+    font-size: calc(4.3px * var(--yard-label-scale, 1));
     font-weight: 540;
     letter-spacing: 0;
   }
@@ -116,7 +116,7 @@
   }
 
   .map-zone text {
-    font-size: 3.3px;
+    font-size: calc(3.3px * var(--yard-label-scale, 1));
     font-weight: 480;
     letter-spacing: 0.3px;
   }
