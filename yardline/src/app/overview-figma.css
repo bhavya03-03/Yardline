@@ -146,7 +146,12 @@
   }
 
   .overview-map {
-    padding: 48px;
+    --occupied: #252568;
+    --occupied-border: #252568;
+    --occupied-text: #ffffff;
+    --available-border: #8caa58;
+    --available-text: #000000;
+    padding: 32px 48px 48px;
     background: var(--block-lime);
     border: 0;
     border-radius: 24px;
@@ -161,25 +166,128 @@
     flex: 1 1 400px;
   }
 
+  .overview-map .panel-heading h2 {
+    margin-top: 0;
+  }
+
   .overview-map .panel-heading .btn {
     align-self: flex-start;
   }
 
+  .overview-map-scroll {
+    max-width: 100%;
+    overflow: auto;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--block-lime) 28%, white);
+  }
+
+  .overview-map-scroll-hint {
+    display: none;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 330;
+  }
+
   .overview-map .yard-canvas {
     width: 100%;
+    min-width: 900px;
     margin: 0;
-    min-height: 480px;
-    max-height: 680px;
-    aspect-ratio: 1.55;
-    background: white;
+    min-height: 0;
+    max-height: none;
+    background: transparent;
     border: 0;
     border-radius: 8px;
+  }
+
+  .overview-map .yard-svg {
+    padding: 16px 8px 36px;
+  }
+
+  .overview-map .yard-boundary {
+    fill: transparent;
+    stroke: #00000033;
+  }
+
+  .overview-map .block-outline {
+    fill: #ffffff99;
+    stroke: none;
+  }
+
+  .overview-map .yard-svg text {
+    font-family: var(--workspace-sans);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+  }
+
+  .overview-map .block-label {
+    font-size: 4.3px;
+    font-weight: 700;
+    fill: black;
+  }
+
+  .overview-map .block-subtitle {
+    font-size: 3.8px;
+    font-weight: 480;
+    fill: black;
+  }
+
+  .overview-map .block-count {
+    font-size: 3.3px;
+    font-weight: 480;
+    fill: black;
+  }
+
+  .overview-map .row-label {
+    font-size: 3.5px;
+    font-weight: 540;
+    fill: black;
+  }
+
+  .overview-map .map-slot text {
+    font-size: 3.8px;
+    font-weight: 540;
+    letter-spacing: 0;
+  }
+
+  .overview-map .container-ribs {
+    display: none;
+  }
+
+  .overview-map .map-zone rect {
+    fill: color-mix(in srgb, var(--block-lime) 50%, white);
+    stroke: #00000026;
+  }
+
+  .overview-map .zone-restricted rect {
+    fill: url(#restricted-hatch);
+    stroke: var(--hazard-border);
+  }
+
+  .overview-map .map-zone text {
+    font-size: 3.3px;
+    font-weight: 480;
+    letter-spacing: 0.3px;
+  }
+
+  .overview-map .map-scale small {
+    font-size: 12px;
   }
 
   .overview-map .map-legend {
     padding: 24px 0 0;
     gap: 12px 24px;
     color: black;
+  }
+
+  .overview-map .map-legend > span {
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 480;
+  }
+
+  .overview-map .map-legend i {
+    width: 12px;
+    height: 12px;
   }
 
   .map-legend > span {
@@ -366,6 +474,12 @@
   }
 }
 
+@media (max-width: 1280px) {
+  .app-shell.page-overview .overview-map-scroll-hint {
+    display: block;
+  }
+}
+
 @media (max-width: 1200px) {
   .app-shell.page-overview {
     main {
@@ -407,8 +521,8 @@
       border-radius: 0;
     }
 
-    .overview-map .yard-canvas {
-      min-height: 360px;
+    .overview-map {
+      padding-top: 24px;
     }
 
     .recent-panel .panel-heading {
@@ -466,10 +580,6 @@
 
     .overview-map .panel-heading > div {
       flex-basis: 100%;
-    }
-
-    .overview-map .yard-canvas {
-      min-height: 320px;
     }
 
     :is(.icon-button, .toolbar-avatar) {

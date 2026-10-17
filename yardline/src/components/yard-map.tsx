@@ -16,6 +16,7 @@ export function YardMap({
   filter = 'all',
   compact = false,
   pickMode = false,
+  variant = 'standard',
 }: {
   data: Snapshot;
   tier: number;
@@ -26,6 +27,7 @@ export function YardMap({
   filter?: string;
   compact?: boolean;
   pickMode?: boolean;
+  variant?: 'standard' | 'overview';
 }) {
   const occupancy = useMemo(
     () =>
@@ -151,11 +153,20 @@ export function YardMap({
     );
   }
   return (
-    <div className={`yard-canvas ${block ? 'focused' : ''} ${compact ? 'compact' : ''}`}>
-      <span className="canvas-caption">
-        <MapPin size={12} />
-        {data.yard.code} · LOCAL YARD PLAN
-      </span>
+    <div
+      className={`yard-canvas ${block ? 'focused' : ''} ${compact ? 'compact' : ''}`}
+      style={
+        variant === 'overview'
+          ? { aspectRatio: `${data.yard.width + 6} / ${data.yard.height + 6}` }
+          : undefined
+      }
+    >
+      {variant !== 'overview' ? (
+        <span className="canvas-caption">
+          <MapPin size={12} />
+          {data.yard.code} · LOCAL YARD PLAN
+        </span>
+      ) : null}
       <span className="north-arrow">
         <span>↑</span>N
       </span>
@@ -334,7 +345,7 @@ export function YardMap({
               data-location-code={slot.code}
               data-status={status}
               role="button"
-              tabIndex={compact ? -1 : 0}
+              tabIndex={compact && variant !== 'overview' ? -1 : 0}
               aria-label={`${slot.code} · ${status}${container ? ` · ${container.number}` : ''}${attention ? ' · Needs verification' : ''}`}
               aria-pressed={isSelected}
               className={`map-slot slot-${status} ${isSelected ? 'slot-selected' : ''} ${dimmed ? 'slot-dimmed' : ''}`}

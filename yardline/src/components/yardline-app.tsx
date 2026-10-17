@@ -841,8 +841,7 @@ function Overview({
         <section className="panel overview-map">
           <div className="panel-heading">
             <div>
-              <span className="overview-eyebrow">Yard visibility</span>
-              <h2>Your yard, at a glance.</h2>
+              <h2>Yard Layout</h2>
               <p>Recorded storage positions · Ground level · Tier 1</p>
             </div>
             <Button variant="ghost" onClick={onMap}>
@@ -850,19 +849,28 @@ function Overview({
               <ArrowUpRight size={15} />
             </Button>
           </div>
-          <YardMap
-            data={data}
-            tier={1}
-            blockId={null}
-            selectedSlotId={null}
-            onBlock={onMap}
-            onSelect={(slot) => {
-              const c = data.containers.find((c) => c.current_slot_id === slot.id);
-              if (c) onLocate(c);
-              else onMap();
-            }}
-            compact
-          />
+          <div
+            className="overview-map-scroll"
+            role="region"
+            aria-label="Scrollable yard layout"
+            tabIndex={0}
+          >
+            <YardMap
+              data={data}
+              tier={1}
+              blockId={null}
+              selectedSlotId={null}
+              onBlock={onMap}
+              onSelect={(slot) => {
+                const c = data.containers.find((c) => c.current_slot_id === slot.id);
+                if (c) onLocate(c);
+                else onMap();
+              }}
+              compact
+              variant="overview"
+            />
+          </div>
+          <p className="overview-map-scroll-hint">Scroll across to see all bays →</p>
           <Legend />
         </section>
         <section className="panel occupancy-panel">
