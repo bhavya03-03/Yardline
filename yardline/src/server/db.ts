@@ -18,9 +18,12 @@ export class Database {
   constructor(path?: string) {
     this.mode = !path && process.env.PERSISTENCE === 'postgres' ? 'postgres' : 'sqlite';
     if (this.mode === 'postgres') {
-      if (!process.env.DATABASE_URL)
-        throw new Error('DATABASE_URL is required for PostgreSQL. No local fallback was used.');
-      this.pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 5 });
+      const connectionString = process.env.DATABASE_URL || process.env.NETLIFY_DB_URL;
+      if (!connectionString)
+        throw new Error(
+          'DATABASE_URL or NETLIFY_DB_URL is required for PostgreSQL. No local fallback was used.',
+        );
+      this.pool = new Pool({ connectionString, max: 5 });
     } else {
       if (!path && process.env.PERSISTENCE && process.env.PERSISTENCE !== 'sqlite')
         throw new Error('PERSISTENCE must be sqlite or postgres.');

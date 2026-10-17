@@ -28,6 +28,18 @@ npm start
 
 Stop the development server before building and starting on the same port. The SQLite adapter needs a persistent, writable disk and a Node server; do not deploy it to ephemeral serverless storage.
 
+### Netlify deployment
+
+Live demonstration: **https://yardline-bhavya0303.netlify.app**. Production opens directly without a sign-in prompt, as requested by the owner. Anyone with the link can use its shared demo personas, including administrator. Netlify team login remains enabled for non-production deployments. Verified on 2026-10-18: PostgreSQL persistence, all 102 containers and 212 movements, viewer restrictions, and rollback of an invalid relocation without changing yard records.
+
+`netlify.toml` builds the Next.js application with Node 24 and includes the runtime schema file. The server accepts Netlify's managed `NETLIFY_DB_URL` when `PERSISTENCE=postgres`; an explicitly configured `DATABASE_URL` takes precedence. Netlify applies the SQL files in `migrations/` before publishing. `002_initial_demo.sql` is a one-time snapshot of the existing synthetic demonstration yard, not a reset or an operational-data import.
+
+The `@netlify/database` dependency enables Netlify's database provisioning step; application queries continue to use `pg`. The migration directory is configured under `[database.migrations]`. Netlify builds use Webpack for adapter compatibility. The local Windows deployment also required adapter workarounds for symlink copies, file URLs, and renaming an IDE-watched build directory; these changes are in ignored build dependencies, not application source. Prefer a Linux/cloud build for subsequent deployments, or reapply the local adapter workarounds if those dependencies are reinstalled. This CLI deployment is not connected to automatic Git deployments.
+
+The optional deployment gate in `src/proxy.ts` can require HTTP Basic credentials through `YARDLINE_REQUIRE_ACCESS_GATE=true`, `YARDLINE_ACCESS_USERNAME`, and a secret `YARDLINE_ACCESS_PASSWORD`. The public production demo explicitly overrides the require flag to `false` and removes both access credentials from the production context; preview settings are retained. Native clients of this public demo need no Basic header: select the operator role through `/api/session` and preserve the role cookie. Use the Supabase authentication setup below for individual workers; switchable demo personas are not individual worker accounts.
+
+Deployment setup stores local access credentials under the ignored `.netlify/` directory. Never commit those files. Local development without gate settings retains its existing access behavior. A local SQLite server and the deployed PostgreSQL server do not synchronize automatically: web and mobile clients must both use the deployed API origin to share live records.
+
 ## Three-minute judging sequence
 
 1. Inspect the full yard and switch between tiers 1–3. Blue slots contain actual registered containers. Hatched positions are unavailable.
@@ -122,7 +134,7 @@ Mutations return `{ state, entityId }` after successful validation. Errors have 
 
 The local demonstration intentionally has **switchable, unauthenticated demo sessions**, with server-enforced administrator/operator/viewer permissions. It is suitable for a trusted presentation environment. Anyone with access to that instance can choose a demo role. Do not expose it as a secured production service.
 
-A PostgreSQL adapter and Supabase sign-in path are included. No cloud project or credentials were available during implementation, so **the live Supabase integration has not been exercised**. The entire tested demonstration uses SQLite. To configure a Supabase-backed environment:
+A PostgreSQL adapter and Supabase sign-in path are included. The deployed Netlify demonstration has verified PostgreSQL persistence and a shared password gate; local backend tests use isolated SQLite databases. **The live Supabase worker sign-in integration has not been exercised.** To configure a Supabase-backed environment:
 
 1. Copy `.env.example` to `.env.local` and set:
 

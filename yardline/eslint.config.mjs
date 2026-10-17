@@ -7,6 +7,7 @@ export default defineConfig([
   globalIgnores([
     '.next/**',
     '.next-e2e/**',
+    '.netlify/**',
     'output/**',
     'test-results/**',
     'public/ocr/**',

@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build -- --webpack"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[functions]
+  included_files = ["migrations/001_schema.sql"]
+
+[database.migrations]
+  path = "migrations"
