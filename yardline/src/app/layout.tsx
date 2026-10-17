@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import './overview.css';
+import './workspace.css';
 export const metadata: Metadata = {
   title: 'Yardline — A place for every container',
   description:
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#f2f3ff',
+  themeColor: '#fafafa',
   colorScheme: 'light',
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
