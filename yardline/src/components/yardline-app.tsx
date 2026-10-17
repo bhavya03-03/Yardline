@@ -406,11 +406,7 @@ export default function YardlineApp() {
               >
                 <X size={14} />
               </button>
-            ) : (
-              <span className="search-format" aria-hidden="true">
-                ID / LINE
-              </span>
-            )}
+            ) : null}
             {searchOpen && q ? (
               <div className="search-dropdown">
                 <div className="search-dropdown-label">
@@ -528,14 +524,13 @@ export default function YardlineApp() {
           {page === 'map' ? (
             <>
               <div className="map-layout">
-                <section className="panel map-panel">
+                <section className="panel map-panel yard-grid-theme">
                   <div className="map-panel-heading">
                     <div>
                       <h2>
                         <span className="heading-marker" />
                         Storage grid
                       </h2>
-                      <span className="map-record-note">Operator-recorded positions</span>
                     </div>
                     <div className="map-controls">
                       <select
@@ -568,10 +563,8 @@ export default function YardlineApp() {
                           className={blockId === b.id ? 'active' : ''}
                           aria-pressed={blockId === b.id}
                           onClick={() => setBlockId(b.id)}
-                          title={`${b.code} · ${b.name}`}
                         >
                           <span className="mono">{b.code}</span>
-                          <span className="block-tab-name">{b.name}</span>
                         </button>
                       ))}
                     </div>
@@ -594,15 +587,18 @@ export default function YardlineApp() {
                       )}
                     </div>
                   </div>
-                  <YardMap
-                    data={data}
-                    tier={tier}
-                    blockId={blockId}
-                    selectedSlotId={selectedSlotId}
-                    onSelect={selectSlot}
-                    onBlock={setBlockId}
-                    filter={mapFilter}
-                  />
+                  <div className="yard-map-surface" role="region" aria-label="Yard layout">
+                    <YardMap
+                      data={data}
+                      tier={tier}
+                      blockId={blockId}
+                      selectedSlotId={selectedSlotId}
+                      onSelect={selectSlot}
+                      onBlock={setBlockId}
+                      filter={mapFilter}
+                      variant="readable"
+                    />
+                  </div>
                   <Legend />
                   <div className="map-footer">
                     <span>
@@ -702,18 +698,6 @@ export default function YardlineApp() {
           {page === 'settings' ? (
             <Settings data={data} onReload={() => void load(data.yard.id)} onNotify={setToast} />
           ) : null}
-          <footer className="workspace-footer">
-            <span>
-              <span className="footer-dot" />
-              {data.persistence === 'sqlite'
-                ? 'SQLite · local persistence'
-                : 'PostgreSQL · connected'}
-              {data.yard.is_demo ? ' · Demonstration data' : ''}
-            </span>
-            <span>
-              Last database read {time(data.generatedAt, true)} · Times in your browser timezone
-            </span>
-          </footer>
         </main>
       </div>
       {toast ? (
@@ -762,7 +746,7 @@ function Brand() {
         <span />
       </span>
       <span>
-        <strong>YARDLINE TOS</strong>
+        <strong>YARDLINE</strong>
         <small>TERMINAL WORKSPACE</small>
       </span>
     </div>
@@ -838,7 +822,7 @@ function Overview({
   return (
     <>
       <div className="overview-grid">
-        <section className="panel overview-map">
+        <section className="panel overview-map yard-grid-theme">
           <div className="panel-heading">
             <div>
               <h2>Yard Layout</h2>
@@ -849,12 +833,7 @@ function Overview({
               <ArrowUpRight size={15} />
             </Button>
           </div>
-          <div
-            className="overview-map-scroll"
-            role="region"
-            aria-label="Scrollable yard layout"
-            tabIndex={0}
-          >
+          <div className="yard-map-surface" role="region" aria-label="Yard layout">
             <YardMap
               data={data}
               tier={1}
@@ -867,16 +846,14 @@ function Overview({
                 else onMap();
               }}
               compact
-              variant="overview"
+              variant="readable"
             />
           </div>
-          <p className="overview-map-scroll-hint">Scroll across to see all bays →</p>
           <Legend />
         </section>
         <section className="panel occupancy-panel">
           <div className="panel-heading">
             <div>
-              <span className="overview-eyebrow">02 / Capacity</span>
               <h2>Storage by block</h2>
             </div>
             <Layers3 size={17} />
@@ -922,7 +899,6 @@ function Overview({
       <section className="panel recent-panel">
         <div className="panel-heading">
           <div>
-            <span className="overview-eyebrow">03 / Movements</span>
             <h2>Recent yard activity</h2>
             <p>From recorded operations, with a permanent movement history.</p>
           </div>
@@ -936,7 +912,6 @@ function Overview({
       <section className="overview-attention-section" aria-labelledby="overview-review-heading">
         <div className="panel-heading">
           <div>
-            <span className="overview-eyebrow">04 / Next up</span>
             <h2 id="overview-review-heading">A place for every container.</h2>
             <p>Confirm placements and keep recorded locations up to date.</p>
           </div>

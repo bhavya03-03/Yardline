@@ -19,8 +19,8 @@ import { checkDigit, extractCandidates, identityStatus } from '../src/lib/identi
 import type { Actor, Container, Movement, Slot, Yard } from '../src/lib/types';
 import { snapshot } from '../src/server/service';
 let db: Database, yard: Yard, slots: Slot[];
-const viewer: Actor = { id: 'demo-viewer', name: 'Jordan Lee', role: 'viewer' };
-const operator: Actor = { id: 'demo-operator', name: 'Sam Patel', role: 'operator' };
+const viewer: Actor = { id: 'demo-viewer', name: 'Rohan Mehta', role: 'viewer' };
+const operator: Actor = { id: 'demo-operator', name: 'Priya Patel', role: 'operator' };
 beforeEach(async () => {
   db = new Database(':memory:');
   await db.setup();
@@ -73,6 +73,66 @@ test('seed produces relational positions, consistent counts and a known movable 
     assert.equal((await primary(tx)).current_slot_id, getSlot('B01-R01-BY01-T01').id);
   });
 });
+test('reseeding updates demo identities and movement names without changing yard data or real users', async () => {
+  await db.transaction(async (tx) => {
+    const before = await snapshot(tx, demoActor, yard.id);
+    await tx.run('INSERT INTO user_profiles(id,display_name) VALUES(?,?)', [
+      'real-user',
+      'Keep Name',
+    ]);
+    const realMovement = before.movements[0];
+    await tx.run('UPDATE container_movements SET user_id=?,actor_name=? WHERE id=?', [
+      'real-user',
+      'Keep Name',
+      realMovement.id,
+    ]);
+    for (const [index, [role, oldName]] of [
+      ['administrator', 'Alex Morgan'],
+      ['operator', 'Sam Patel'],
+      ['viewer', 'Jordan Lee'],
+    ].entries()) {
+      await tx.run('UPDATE container_movements SET user_id=?,actor_name=? WHERE id=?', [
+        `demo-${role}`,
+        oldName,
+        before.movements[index + 1].id,
+      ]);
+      await tx.run('UPDATE user_profiles SET display_name=? WHERE id=?', [oldName, `demo-${role}`]);
+      await tx.run('UPDATE container_movements SET actor_name=? WHERE user_id=?', [
+        oldName,
+        `demo-${role}`,
+      ]);
+    }
+    await seedDemo(tx);
+    await seedDemo(tx);
+    const profiles = await tx.all<{ id: string; display_name: string }>(
+      'SELECT id,display_name FROM user_profiles ORDER BY id',
+    );
+    assert.deepEqual(
+      profiles.map((profile) => ({ ...profile })),
+      [
+        { id: 'demo-administrator', display_name: 'Aarav Sharma' },
+        { id: 'demo-operator', display_name: 'Priya Patel' },
+        { id: 'demo-viewer', display_name: 'Rohan Mehta' },
+        { id: 'real-user', display_name: 'Keep Name' },
+      ],
+    );
+    const after = await snapshot(tx, demoActor, yard.id);
+    assert.deepEqual(after.containers, before.containers);
+    assert.deepEqual(after.slots, before.slots);
+    assert.equal(after.movements.length, before.movements.length);
+    const names: Record<string, string> = {
+      'demo-administrator': 'Aarav Sharma',
+      'demo-operator': 'Priya Patel',
+      'demo-viewer': 'Rohan Mehta',
+      'real-user': 'Keep Name',
+    };
+    for (const movement of after.movements) {
+      assert.ok(movement.user_id);
+      assert.equal(movement.actor_name, names[movement.user_id]);
+    }
+  });
+});
+
 test('ISO check digit validation and OCR candidates permit human correction', () => {
   assert.equal(checkDigit('MSCU123456'), 6);
   assert.equal(identityStatus('MSCU 123456 6').valid, true);

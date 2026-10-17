@@ -1,0 +1,266 @@
+/* Shared readable yard presentation for Overview and the operational map. */
+.block-grid-row {
+  display: contents;
+}
+
+.app-shell.page-map .map-layout {
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 20px;
+  align-items: start;
+}
+
+.app-shell.page-map .map-panel {
+  min-width: 0;
+  padding: 20px 16px;
+}
+
+.app-shell.page-map .yard-grid-theme .block-tabs {
+  flex: 0 1 auto;
+  width: fit-content;
+}
+
+/* Overview uses the full panel width; only the operational map is height-limited. */
+.app-shell.page-map .yard-grid-theme .yard-canvas:not(.block-view) {
+  max-height: min(560px, 65svh);
+}
+
+.app-shell:is(.page-map, .page-overview) .yard-grid-theme {
+  --block-lime: #dceeb1;
+  --occupied: #252568;
+  --occupied-border: #252568;
+  --occupied-text: #ffffff;
+  --available-border: color-mix(in srgb, var(--block-lime) 65%, black);
+  --available-text: #000000;
+  --map-ground: var(--block-lime);
+  background: var(--block-lime);
+  container-type: inline-size;
+
+  .yard-map-surface {
+    max-width: 100%;
+    border-radius: 8px;
+    background: var(--map-ground);
+  }
+
+  .yard-canvas {
+    width: 100%;
+    margin: 0;
+    min-height: 0;
+    max-height: none;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+  }
+
+  .yard-svg {
+    padding: 12px 4px 28px;
+  }
+
+  .yard-boundary {
+    fill: transparent;
+    stroke: #00000033;
+  }
+
+  .block-outline {
+    fill: #ffffff99;
+    stroke: none;
+  }
+
+  .yard-svg text {
+    font-family: var(--workspace-sans);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+  }
+
+  .block-label {
+    font-size: 4.3px;
+    font-weight: 700;
+    fill: black;
+  }
+
+  .block-subtitle {
+    font-size: 3.8px;
+    font-weight: 480;
+    fill: black;
+  }
+
+  .block-count {
+    font-size: 3.3px;
+    font-weight: 480;
+    fill: black;
+  }
+
+  .row-label {
+    font-size: 3.5px;
+    font-weight: 540;
+    fill: black;
+  }
+
+  .map-slot text {
+    font-size: 4.3px;
+    font-weight: 540;
+    letter-spacing: 0;
+  }
+
+  .container-ribs {
+    display: none;
+  }
+
+  .map-zone rect {
+    fill: color-mix(in srgb, var(--block-lime) 50%, white);
+    stroke: #00000026;
+  }
+
+  .zone-restricted rect {
+    fill: url(#restricted-hatch);
+    stroke: var(--hazard-border);
+  }
+
+  .map-zone text {
+    font-size: 3.3px;
+    font-weight: 480;
+    letter-spacing: 0.3px;
+  }
+
+  .map-scale small {
+    font-size: 12px;
+  }
+
+  .map-legend > span {
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 480;
+  }
+
+  .map-legend i {
+    width: 12px;
+    height: 12px;
+  }
+
+  &.map-panel .map-legend {
+    padding-block: 16px;
+  }
+
+  /* Keep rows and bays aligned while scaling to the space beside the inspector. */
+  .block-view {
+    padding: clamp(8px, 1.6cqi, 16px);
+  }
+
+  .back-to-yard {
+    position: static;
+    align-self: flex-start;
+    padding: 8px 16px;
+    margin-bottom: 12px;
+    font: 480 14px/1.45 var(--workspace-sans);
+  }
+
+  .block-view-heading {
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+
+  .block-view-heading strong {
+    font: 540 22px/1.35 var(--workspace-sans);
+    letter-spacing: -0.26px;
+  }
+
+  .block-view-heading span {
+    font: 330 14px/1.45 var(--workspace-sans);
+  }
+
+  .block-grid-scroll {
+    padding: 8px;
+    margin: -8px;
+    overflow: visible;
+  }
+
+  .block-grid {
+    gap: clamp(2px, 0.7cqi, 8px);
+  }
+
+  :is(.block-grid-corner, .block-grid-bay-label, .block-grid-row-label) {
+    min-width: 0;
+    padding: 8px 0;
+    border: 0;
+    background: transparent;
+    color: black;
+    font: 400 clamp(7px, 1.5cqi, 12px)/1.3 var(--workspace-mono);
+    letter-spacing: 0;
+  }
+
+  .block-slot {
+    min-width: 0;
+    min-height: clamp(56px, 8cqi, 80px);
+    padding: 8px clamp(1px, 0.4cqi, 4px);
+    gap: 3px;
+    border-radius: 6px;
+    font-family: var(--workspace-sans);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+
+  .block-slot::before {
+    display: none;
+  }
+
+  .block-slot.slot-available {
+    border-style: solid;
+  }
+
+  .block-slot > strong {
+    font: 540 22px/1.2 var(--workspace-sans);
+  }
+
+  .block-slot > span {
+    font: 330 clamp(8px, 1.65cqi, 14px)/1.3 var(--workspace-sans);
+  }
+
+  .block-slot.slot-occupied > strong {
+    font: 540 clamp(5px, 1.5cqi, 14px)/1.3 var(--workspace-sans);
+    white-space: nowrap;
+  }
+
+  .block-slot.slot-occupied > span {
+    font: 540 clamp(4px, 1.65cqi, 16px)/1.3 var(--workspace-sans);
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .block-slot > small {
+    font: 330 clamp(7px, 1.4cqi, 12px)/1.3 var(--workspace-sans);
+    color: inherit;
+  }
+
+  .block-slot > i {
+    width: clamp(8px, 1.5cqi, 14px);
+    height: clamp(8px, 1.5cqi, 14px);
+    top: 2px;
+    right: 2px;
+    background: var(--warning);
+    color: white;
+    font: 700 clamp(6px, 1.1cqi, 10px)/1 var(--workspace-sans);
+  }
+
+  .block-slot.slot-selected {
+    color: black;
+    background: white;
+    border-color: black;
+    outline: 2px solid black;
+    outline-offset: 2px;
+  }
+
+  .block-slot.slot-selected :is(strong, span, small) {
+    color: inherit;
+  }
+
+  .block-view-footer {
+    margin-top: 16px;
+    font: 330 14px/1.45 var(--workspace-sans);
+  }
+}
+
+/* The inspector stacks only on touch-sized screens; grids keep every bay in place. */
+@media (max-width: 960px) {
+  .app-shell.page-map .map-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

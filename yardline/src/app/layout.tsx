@@ -3,6 +3,7 @@ import './globals.css';
 import './workspace.css';
 import './figma-workspace.css';
 import './overview-figma.css';
+import './yard-grid.css';
 export const metadata: Metadata = {
   title: 'Yardline — A place for every container',
   description:

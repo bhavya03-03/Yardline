@@ -2,7 +2,7 @@
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { ArrowUpRight, ChevronLeft, Layers3, LocateFixed, MapPin, ShieldAlert } from 'lucide-react';
-import type { Container, Slot, Snapshot } from '@/lib/types';
+import type { Block, Container, Slot, Snapshot } from '@/lib/types';
 import { Badge, Button, Empty, relative, time } from './ui';
 import { apiFetch } from '@/lib/client-api';
 
@@ -27,7 +27,7 @@ export function YardMap({
   filter?: string;
   compact?: boolean;
   pickMode?: boolean;
-  variant?: 'standard' | 'overview';
+  variant?: 'standard' | 'readable';
 }) {
   const occupancy = useMemo(
     () =>
@@ -43,7 +43,7 @@ export function YardMap({
     : `-3 -3 ${data.yard.width + 6} ${data.yard.height + 6}`;
   const selected = data.slots.find((s) => s.id === selectedSlotId);
   const statusOf = (s: Slot) => (occupancy.has(s.id) ? 'occupied' : s.status);
-  if (block) {
+  const renderBlockGrid = (block: Block) => {
     const rows = data.rows.filter((row) => row.block_id === block.id);
     const maxBays = Math.max(
       0,
@@ -52,44 +52,32 @@ export function YardMap({
         .map((bay) => bay.ordinal),
     );
     return (
-      <div className="yard-canvas focused block-view">
-        <button type="button" className="back-to-yard" onClick={() => onBlock(null)}>
-          <ChevronLeft size={14} />
-          All blocks<span>/ {block.code}</span>
-        </button>
-        <div className="block-view-heading">
-          <div>
-            <strong>
-              {block.code} · {block.name}
-            </strong>
-            <span>Tier {tier} · Select a position to inspect it</span>
-          </div>
-          <Layers3 size={17} />
-        </div>
+      <div
+        className="block-grid-scroll"
+        tabIndex={variant === 'readable' ? undefined : 0}
+        aria-label={`Bays in block ${block.code}`}
+      >
         <div
-          className="block-grid-scroll"
-          tabIndex={0}
-          aria-label={`Scrollable bays in block ${block.code}`}
+          className="block-grid"
+          role="group"
+          aria-label={`${data.yard.name} block ${block.code} storage map, tier ${tier}`}
+          style={{
+            gridTemplateColumns:
+              variant === 'readable'
+                ? `clamp(16px, 4cqi, 32px) repeat(${maxBays}, minmax(0, 1fr))`
+                : `30px repeat(${maxBays}, minmax(${compact ? 36 : 62}px, 1fr))`,
+          }}
         >
-          <div
-            className="block-grid"
-            role="group"
-            aria-label={`${data.yard.name} block ${block.code} storage map, tier ${tier}`}
-            style={{
-              gridTemplateColumns: `30px repeat(${maxBays}, minmax(${compact ? 36 : 62}px, 1fr))`,
-            }}
-          >
-            <span className="block-grid-corner">ROW</span>
-            {Array.from({ length: maxBays }, (_, i) => (
-              <span key={`bay-${i}`} className="block-grid-bay-label">
-                BY{String(i + 1).padStart(2, '0')}
-              </span>
-            ))}
-            {rows.flatMap((row) => [
-              <span key={row.id} className="block-grid-row-label">
-                {row.code}
-              </span>,
-              ...Array.from({ length: maxBays }, (_, i) => {
+          <span className="block-grid-corner">ROW</span>
+          {Array.from({ length: maxBays }, (_, i) => (
+            <span key={`bay-${i}`} className="block-grid-bay-label">
+              BY{String(i + 1).padStart(2, '0')}
+            </span>
+          ))}
+          {rows.map((row) => (
+            <div key={row.id} className="block-grid-row">
+              <span className="block-grid-row-label">{row.code}</span>
+              {Array.from({ length: maxBays }, (_, i) => {
                 const slot = slots.find((s) => s.row_id === row.id && s.bay_ordinal === i + 1);
                 if (!slot)
                   return (
@@ -138,13 +126,33 @@ export function YardMap({
                     )}
                   </button>
                 );
-              }),
-            ])}
-          </div>
+              })}
+            </div>
+          ))}
         </div>
+      </div>
+    );
+  };
+  if (block) {
+    return (
+      <div className="yard-canvas focused block-view">
+        <button type="button" className="back-to-yard" onClick={() => onBlock(null)}>
+          <ChevronLeft size={14} />
+          All blocks<span>/ {block.code}</span>
+        </button>
+        <div className="block-view-heading">
+          <div>
+            <strong>
+              {block.code} · {block.name}
+            </strong>
+            <span>Tier {tier} · Select a position to inspect it</span>
+          </div>
+          <Layers3 size={17} />
+        </div>
+        {renderBlockGrid(block)}
         <div className="block-view-footer">
           <span>Each bay is one vertical stack. You are viewing tier {tier}.</span>
-          <span>Scroll to see all bays →</span>
+          {variant !== 'readable' ? <span>Scroll to see all bays →</span> : null}
         </div>
         {!slots.length ? (
           <div className="inline-notice">No positions at this tier. Choose a lower tier.</div>
@@ -156,12 +164,12 @@ export function YardMap({
     <div
       className={`yard-canvas ${block ? 'focused' : ''} ${compact ? 'compact' : ''}`}
       style={
-        variant === 'overview'
+        variant === 'readable'
           ? { aspectRatio: `${data.yard.width + 6} / ${data.yard.height + 6}` }
           : undefined
       }
     >
-      {variant !== 'overview' ? (
+      {variant !== 'readable' ? (
         <span className="canvas-caption">
           <MapPin size={12} />
           {data.yard.code} · LOCAL YARD PLAN
@@ -345,7 +353,7 @@ export function YardMap({
               data-location-code={slot.code}
               data-status={status}
               role="button"
-              tabIndex={compact && variant !== 'overview' ? -1 : 0}
+              tabIndex={compact && variant !== 'readable' ? -1 : 0}
               aria-label={`${slot.code} · ${status}${container ? ` · ${container.number}` : ''}${attention ? ' · Needs verification' : ''}`}
               aria-pressed={isSelected}
               className={`map-slot slot-${status} ${isSelected ? 'slot-selected' : ''} ${dimmed ? 'slot-dimmed' : ''}`}
@@ -453,7 +461,9 @@ export function Legend() {
         Blocked / restricted
       </span>
       <span>
-        <i className="legend-attention" />
+        <i className="legend-attention" aria-hidden="true">
+          !
+        </i>
         Needs verification
       </span>
     </div>

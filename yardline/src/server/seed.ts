@@ -2,22 +2,30 @@ import type { Tx } from './db';
 import type { Actor, Slot } from '@/lib/types';
 import { checkDigit } from '@/lib/identity';
 import { generateBlock, now, record, slotSelect, uid } from './operations';
+import { demoNames } from './demo-profiles';
 
 export const demoActor: Actor = {
   id: 'demo-administrator',
-  name: 'Alex Morgan',
+  name: demoNames.administrator,
   role: 'administrator',
 };
 const hoursAgo = (h: number) => new Date(Date.now() - h * 3600000).toISOString();
 export async function seedDemo(tx: Tx) {
+  // Keep existing demo identities and historical actor labels in sync without resetting yard data.
+  for (const [role, name] of Object.entries(demoNames)) {
+    const id = `demo-${role}`;
+    await tx.run(
+      'INSERT INTO user_profiles(id,display_name) VALUES(?,?) ON CONFLICT(id) DO UPDATE SET display_name=excluded.display_name',
+      [id, name],
+    );
+    await tx.run('UPDATE container_movements SET actor_name=? WHERE user_id=? AND actor_name<>?', [
+      name,
+      id,
+      name,
+    ]);
+  }
   const existing = await tx.one<{ n: number }>('SELECT COUNT(*) AS n FROM yards');
   if (existing!.n) return;
-  for (const [role, name] of [
-    ['administrator', 'Alex Morgan'],
-    ['operator', 'Sam Patel'],
-    ['viewer', 'Jordan Lee'],
-  ])
-    await tx.run('INSERT INTO user_profiles(id,display_name) VALUES(?,?)', [`demo-${role}`, name]);
   const yardId = uid();
   await tx.run(
     'INSERT INTO yards(id,code,name,width,height,boundary,is_demo,created_at) VALUES(?,?,?,?,?,?,?,?)',

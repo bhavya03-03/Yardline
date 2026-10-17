@@ -24,6 +24,17 @@
   font-weight: 330;
   font-kerning: normal;
 
+  .map-legend .legend-attention {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    color: white;
+    font: 700 9px/1 var(--workspace-sans);
+  }
+
   :is(.btn, .nav-item, .text-button, .table-id, .location-link) {
     border-radius: 50px;
   }
@@ -332,6 +343,24 @@
     border-radius: 50px;
     font-weight: 480;
     font-size: 11px;
+  }
+
+  :is(.inventory-panel, .history-panel) td > .badge {
+    position: relative;
+    width: 128px;
+    min-height: 28px;
+    justify-content: center;
+    padding: 4px 20px;
+    line-height: 18px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  :is(.inventory-panel, .history-panel) td > .badge::before {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .table-toolbar {
@@ -793,14 +822,6 @@
   .role-descriptions strong,
   .operational-notes strong {
     font-weight: 540;
-  }
-
-  .workspace-footer {
-    margin-top: 48px;
-    padding-block: 32px;
-    color: black;
-    font-size: 12px;
-    font-weight: 330;
   }
 }
 

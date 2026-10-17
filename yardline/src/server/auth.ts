@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Actor, Role } from '@/lib/types';
 import type { Tx } from './db';
+import { demoNames } from './demo-profiles';
 import { AppError } from './validation';
 
 export async function authenticate(
@@ -20,8 +21,7 @@ export async function authenticate(
     const role = cookie ?? 'administrator';
     return {
       id: `demo-${role}`,
-      name:
-        role === 'administrator' ? 'Alex Morgan' : role === 'operator' ? 'Sam Patel' : 'Jordan Lee',
+      name: demoNames[role],
       demoRole: role,
     };
   }
@@ -53,7 +53,7 @@ export async function authorize(
 ): Promise<Actor> {
   if (subject.demoRole) {
     await tx.run(
-      'INSERT INTO user_profiles(id,display_name) VALUES(?,?) ON CONFLICT(id) DO NOTHING',
+      'INSERT INTO user_profiles(id,display_name) VALUES(?,?) ON CONFLICT(id) DO UPDATE SET display_name=excluded.display_name',
       [subject.id, subject.name],
     );
     return { id: subject.id, name: subject.name, role: subject.demoRole };
