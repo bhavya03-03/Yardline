@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "stitch": {
+    "projectId": "5704292758737904542",
+    "referenceScreen": {
+      "id": "4656641858289934698",
+      "route": "/",
+      "title": "Home",
+      "deviceType": "DESKTOP",
+      "extractedAt": "2026-10-17T09:36:07.981Z"
+    },
+    "referenceScreens": [
+      {
+        "id": "4859560747232695835",
+        "route": "/yard-map",
+        "title": "Yard Map",
+        "deviceType": "DESKTOP",
+        "extractedAt": "2026-10-17T09:35:44.080Z"
+      },
+      {
+        "id": "4656641858289934698",
+        "route": "/",
+        "title": "Home",
+        "deviceType": "DESKTOP",
+        "extractedAt": "2026-10-17T09:36:07.981Z"
+      }
+    ]
+  }
+}

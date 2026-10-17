@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"primary":"#0037b0","inverse-primary":"#b7c4ff","surface":"#faf8ff","error":"#ba1a1a","surface-container-low":"#f2f3ff","on-secondary-fixed":"#0d1c2f","surface-container-lowest":"#ffffff","secondary":"#515f74","on-tertiary":"#ffffff","secondary-fixed":"#d5e3fd","on-primary-container":"#cad3ff","on-primary-fixed-variant":"#0039b5","surface-dim":"#d2d9f4","surface-variant":"#dae2fd","surface-container-highest":"#dae2fd","surface-container-high":"#e2e7ff","error-container":"#ffdad6","tertiary-fixed-dim":"#ffb59c","on-tertiary-fixed":"#390c00","on-primary":"#ffffff","primary-fixed":"#dce1ff","surface-bright":"#faf8ff","on-secondary-fixed-variant":"#3a485c","on-secondary":"#ffffff","inverse-surface":"#283044","on-error":"#ffffff","on-surface":"#131b2e","on-primary-fixed":"#001551","inverse-on-surface":"#eef0ff","on-surface-variant":"#434655","tertiary-fixed":"#ffdbcf","on-error-container":"#93000a","outline":"#747686","primary-fixed-dim":"#b7c4ff","primary-container":"#1d4ed8","surface-container":"#eaedff","secondary-container":"#d5e3fd","outline-variant":"#c4c5d7","on-secondary-container":"#57657b","on-tertiary-container":"#ffc9b7","on-tertiary-fixed-variant":"#832700","tertiary-container":"#a73400","secondary-fixed-dim":"#b9c7e0","on-background":"#131b2e","background":"#faf8ff","tertiary":"#7f2500","surface-tint":"#2151da"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"gutter":"0.75rem","gutter-dense":"0.375rem","space-xl":"1rem","space-sm":"0.375rem","space-xs":"0.25rem","space-lg":"0.75rem","margin":"1rem","margin-compact":"0.5rem","space-md":"0.5rem"},"fontFamily":{"code-container-id-sm":["JetBrains Mono"],"body-sm":["Inter"],"headline-lg":["Inter"],"label-caps":["Inter"],"body-md":["Inter"],"label-tabular":["JetBrains Mono"],"code-container-id":["JetBrains Mono"],"headline-sm":["Inter"]},"fontSize":{"code-container-id-sm":["11px",{"lineHeight":"14px","fontWeight":"600"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"headline-lg":["18px",{"lineHeight":"24px","fontWeight":"600"}],"label-caps":["11px",{"lineHeight":"14px","fontWeight":"600"}],"body-md":["13px",{"lineHeight":"18px","fontWeight":"400"}],"label-tabular":["12px",{"lineHeight":"16px","fontWeight":"500"}],"code-container-id":["13px",{"lineHeight":"16px","fontWeight":"600"}],"headline-sm":["15px",{"lineHeight":"20px","fontWeight":"600"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased pb-7"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low flex flex-col z-50 border-r border-surface-dim"><div class="h-14 px-margin flex items-center justify-between border-b border-surface-dim bg-surface-container-lowest"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary text-[20px]">grid_view</span><div class="flex flex-col"><span class="font-headline-sm text-headline-sm font-bold tracking-tight text-on-surface">YARDLINE TOS</span><span class="font-code-container-id-sm text-code-container-id-sm text-secondary tracking-normal">TERMINAL v4.2</span></div></div><span class="font-label-caps text-label-caps px-space-xs py-[2px] bg-primary-fixed text-on-primary-fixed rounded-DEFAULT border border-surface-dim uppercase">PROD</span></div><div class="p-space-sm border-b border-surface-dim bg-surface-container-lowest"><div class="p-space-xs bg-surface-container-low rounded-DEFAULT border border-surface-dim flex items-center justify-between"><div class="flex items-center gap-space-xs overflow-hidden"><span class="material-symbols-outlined text-secondary text-[18px]">warehouse</span><div class="truncate"><div class="font-label-caps text-label-caps uppercase text-on-surface truncate">North Yard (YD01)</div><div class="font-label-tabular text-label-tabular text-secondary text-[10px] leading-tight">SEC B-04 · WHF-2</div></div></div><span class="material-symbols-outlined text-secondary text-[16px]">unfold_more</span></div></div><div class="flex-1 overflow-y-auto px-space-xs py-space-sm space-y-space-md"><div class="px-space-xs font-label-caps text-label-caps text-secondary uppercase tracking-wider">Operations Core</div><nav class="space-y-[2px]" data-active-classes="bg-primary-container text-on-primary font-bold shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="overview" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="font-body-md text-body-md">Overview</span></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="yard-map" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">map</span><span class="font-body-md text-body-md">Yard Map</span></div><span class="inline-flex items-center gap-1 font-label-caps text-label-caps px-1 py-0.5 rounded-DEFAULT bg-surface-container-highest text-primary border border-surface-dim"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>LIVE</span></a><a class="flex items-center justify-between px-space-sm py-space-xs rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="containers" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">view_in_ar</span><span class="font-body-md text-body-md">Containers</span></div><span class="font-code-container-id-sm text-code-container-id-sm px-1.5 py-0.2 bg-secondary-container text-on-secondary-container rounded-DEFAULT">100</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-DEFAULT transition-colors bg-primary-container text-on-primary font-bold shadow-sm" data-path="register-container" href="#"><span class="material-symbols-outlined text-[18px]">add_box</span><span class="font-body-md text-body-md">Register Container</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="movement-history" href="#"><span class="material-symbols-outlined text-[18px]">history</span><span class="font-body-md text-body-md">Movement History</span></a></nav><div class="px-space-xs pt-space-xs font-label-caps text-label-caps text-secondary uppercase tracking-wider">Administration</div><nav class="space-y-[2px]" data-active-classes="bg-primary-container text-on-primary font-bold shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="yard-configuration" href="#"><span class="material-symbols-outlined text-[18px]">settings_input_component</span><span class="font-body-md text-body-md">Yard Configuration</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">tune</span><span class="font-body-md text-body-md">Settings</span></a></nav></div><div class="border-t border-surface-dim bg-surface-container-lowest p-space-sm space-y-space-xs"><div class="bg-surface-container-low p-space-xs rounded-DEFAULT border border-surface-dim"><div class="flex items-center justify-between mb-space-xs"><span class="font-label-caps text-label-caps uppercase text-secondary">Active Shift</span><span class="font-label-tabular text-label-tabular text-primary font-bold">08:00</span></div><div class="font-body-sm text-body-sm text-on-surface font-medium truncate">Day Shift · Lead: Alex Morgan</div><div class="mt-space-xs pt-space-xs border-t border-surface-dim flex items-center justify-between font-label-tabular text-[10px] text-secondary"><span>[?]: Help</span><span>[B]: Bay Select</span></div></div><div class="flex items-center justify-between pt-space-xs"><div class="flex items-center gap-space-xs min-w-0"><div class="w-7 h-7 rounded-DEFAULT bg-primary-container flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[16px]">badge</span></div><div class="min-w-0"><div class="font-label-caps text-label-caps text-on-surface font-bold truncate">Jordan Ramos</div><div class="font-label-tabular text-[10px] text-secondary uppercase truncate leading-none">YARD ADMINISTRATOR</div></div></div><button class="text-secondary hover:text-on-surface p-1 rounded-DEFAULT hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[18px]">more_vert</span></button></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest border-b border-surface-dim z-40 px-margin flex items-center justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-lg min-w-0"><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface truncate">North Yard (YD01)</span><span class="font-label-tabular text-label-tabular text-secondary truncate">- 3 Storage Blocks · 1,420 TEU</span><span class="inline-flex items-center gap-1 font-label-caps text-label-caps px-1.5 py-0.5 rounded-DEFAULT bg-surface-container text-primary font-bold border border-surface-dim shrink-0"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>ONLINE · 2M</span></div><div class="flex items-center gap-1 font-label-caps text-[10px] text-secondary truncate"><span>Terminal Ops</span><span>/</span><span>North Yard</span><span>/</span><span class="text-primary font-semibold">Register Container</span></div></div></div><div class="flex items-center gap-space-sm"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-2 text-secondary text-[16px]">search</span><input class="h-8 pl-7 pr-12 w-64 bg-surface-container-low border border-surface-dim rounded-DEFAULT font-code-container-id-sm text-code-container-id-sm text-on-surface placeholder-secondary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" placeholder="Quick search container..." type="text"/><kbd class="absolute right-2 font-label-tabular text-[10px] px-1 py-0.5 bg-surface-container-lowest border border-surface-dim rounded-DEFAULT text-secondary shadow-none">⌘K</kbd></div><div class="hidden xl:flex items-center gap-space-xs font-label-caps text-label-caps"><button class="h-8 px-space-xs rounded-DEFAULT border border-primary bg-primary-fixed text-on-primary-fixed">All Types</button><button class="h-8 px-space-xs rounded-DEFAULT border border-surface-dim bg-surface-container-lowest text-secondary hover:text-on-surface hover:bg-surface-container-low">Reefer</button><button class="h-8 px-space-xs rounded-DEFAULT border border-surface-dim bg-surface-container-lowest text-secondary hover:text-on-surface hover:bg-surface-container-low">Hazmat</button></div><div class="hidden lg:flex items-center gap-1 px-space-xs py-1 border border-surface-dim bg-surface-container-low rounded-DEFAULT font-label-tabular text-label-tabular text-secondary"><span class="material-symbols-outlined text-[14px] text-primary animate-pulse">sync</span><span>Sync 14:02:18</span></div></div><div class="flex items-center gap-space-sm shrink-0"><button class="h-8 px-space-sm rounded-DEFAULT border border-surface-dim bg-surface-container-lowest hover:bg-surface-container-low text-on-surface font-label-caps text-label-caps flex items-center gap-1 transition-colors"><span class="material-symbols-outlined text-[16px]">grid_on</span><span>Live Grid View</span></button><button class="h-8 px-space-sm rounded-DEFAULT bg-primary-container hover:bg-primary text-on-primary font-label-caps text-label-caps flex items-center gap-1 transition-colors"><span class="material-symbols-outlined text-[16px]">add</span><span>+ Register Container</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-14 bg-surface min-h-[calc(100vh-1.75rem)] w-full"><div class="flex flex-col w-full">
+<!-- Top Operational Banner & Ingate Header -->
+<div class="px-margin pt-space-md pb-space-sm bg-surface-container-lowest shadow-sm flex flex-col gap-space-xs">
+<div class="flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs font-label-caps text-label-caps text-secondary uppercase">
+<span class="hover:text-primary cursor-pointer">Operations</span>
+<span>/</span>
+<span class="hover:text-primary cursor-pointer">Register Container</span>
+<span>/</span>
+<span class="text-primary font-bold">Intake Workflow</span>
+</div>
+<div class="flex items-center gap-space-md font-label-tabular text-label-tabular text-secondary">
+<span class="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded-DEFAULT bg-surface-container-high text-on-surface">
+<span class="material-symbols-outlined text-[14px] text-primary">local_shipping</span>
+<span>Gate In-Flow: 14 Trucks/Hr</span>
+</span>
+<span class="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded-DEFAULT bg-surface-container-high text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+<span>Facility: North Yard (YD01)</span>
+</span>
+</div>
+</div>
+<div class="flex flex-wrap items-end justify-between gap-space-sm pt-space-xs">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight uppercase font-bold">Register Container</h1>
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-DEFAULT bg-amber-100 text-amber-900 font-code-container-id-sm text-code-container-id-sm">
+<span class="w-2 h-2 rounded-full bg-amber-600 animate-pulse"></span>
+            INGATE LANE 02 · SENSOR ACTIVE
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary">Record incoming container manifest, verify physical checksum, and assign an initial yard tier slot.</p>
+</div>
+<div class="flex items-center gap-space-xs font-label-tabular text-code-container-id-sm text-secondary bg-surface-container-low px-space-sm py-1 rounded-DEFAULT">
+<span class="text-on-surface-variant font-semibold">Shortcuts:</span>
+<kbd class="px-1 py-0.5 bg-surface-container-lowest rounded-DEFAULT text-on-surface shadow-sm">Esc</kbd>
+<span>Reset Form</span>
+<span class="text-surface-dim">|</span>
+<kbd class="px-1 py-0.5 bg-surface-container-lowest rounded-DEFAULT text-on-surface shadow-sm">⌘↵</kbd>
+<span>Submit Intake</span>
+</div>
+</div>
+</div>
+<!-- Main Multi-Column Intake Workspace -->
+<div class="p-margin grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: Registration Workflow Controls (7 cols on 12-col grid ≈ 58%) -->
+<div class="xl:col-span-7 flex flex-col gap-space-lg">
+<!-- STEP 1: Identification & ISO Specs -->
+<section class="bg-surface-container-lowest rounded-DEFAULT shadow-sm overflow-hidden">
+<div class="h-9 px-space-md bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-5 h-5 rounded-DEFAULT bg-primary text-on-primary flex items-center justify-center font-code-container-id-sm text-code-container-id-sm">1</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider font-bold">Container Identification &amp; ISO Spec</span>
+</div>
+<span class="font-label-tabular text-code-container-id-sm text-primary font-bold">ISO 6346 COMPLIANCE REQUIRED</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-md">
+<!-- Primary Container Identifier Input -->
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<label class="font-label-caps text-label-caps text-secondary uppercase font-semibold">Container Number (Prefix · Serial · Check Digit)</label>
+<span class="inline-flex items-center gap-1 font-label-tabular text-code-container-id-sm text-primary font-semibold bg-surface-container px-1.5 py-0.5 rounded-DEFAULT">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+                VALID ISO 6346 CHECKSUM ✓
+              </span>
+</div>
+<div class="flex gap-space-xs">
+<div class="relative flex-1">
+<input class="w-full h-9 px-space-sm font-code-container-id text-code-container-id bg-surface-container-low text-on-surface rounded-DEFAULT tracking-wider focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary uppercase font-bold" id="container-id-input" type="text" value="TGHU-940129-8"/>
+<span class="absolute right-2.5 top-2 font-code-container-id-sm text-secondary">ISO MOD-11</span>
+</div>
+<button class="h-9 px-space-md bg-surface-container-high hover:bg-surface-container-highest text-primary font-label-caps text-label-caps uppercase rounded-DEFAULT flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[15px]">verified</span>
+<span>Verify BIC Check</span>
+</button>
+</div>
+</div>
+<!-- Photo-Assisted Intake OCR Capture Box -->
+<div class="bg-surface-container-low rounded-DEFAULT p-space-sm flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[16px]">videocam</span>
+<span class="font-label-caps text-label-caps text-on-surface font-bold uppercase">INGATE CAMERA CAPTURE · LANE 02 CAM-A (14:14:58)</span>
+</div>
+<span class="font-code-container-id-sm text-code-container-id-sm text-primary bg-primary-fixed px-1.5 py-0.5 rounded-DEFAULT font-bold">94% CONFIDENCE</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-sm items-center">
+<!-- Visual OCR Bounding Snapshot -->
+<div class="md:col-span-5 relative bg-inverse-surface rounded-DEFAULT overflow-hidden h-24 flex items-center justify-center">
+<div class="w-full h-full bg-cover bg-center opacity-85" data-alt="Close up industrial logistics camera capture of weathered ocean shipping container corner showing crisp stenciled black lettering TGHU 940129 8 on corrugated metal wall under harsh direct daylight on port ingate lane." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAuEDyRGIFWcaHtIDLe7Jgke-0U80b9UiMHi1kwwKwJaqOcymHNWBB4O_45JdhCzwTmCNm8LGDSkoBJQCrWRnUr4MkS60kaZTR3rOv84vitnI73qQi_IFt8XUVIj9gFPQtF9C9mW22bvLIGMHrm-kCSRiEj2dM8EoPh8eHx5qQdOmg0YG6tEj_M2_pvY7u5IXWnBMcXD2nAQAdVMyFKeuYCPjAf8xHUSvEhMakdj0m0XGKlpfVP9kxM')"></div>
+<div class="absolute inset-0 bg-primary/10"></div>
+<!-- OCR Bounding Box overlay -->
+<div class="absolute inset-x-3 inset-y-4 rounded-DEFAULT bg-primary/20 flex flex-col justify-between p-1">
+<div class="flex justify-between items-center text-[9px] font-label-tabular text-on-primary">
+<span class="bg-primary px-1 rounded-DEFAULT">OCR SCAN #4881</span>
+<span class="bg-primary/90 px-1 rounded-DEFAULT">BOX_DET_OK</span>
+</div>
+<div class="bg-inverse-surface/90 text-on-primary font-code-container-id text-code-container-id-sm px-1.5 py-0.5 text-center tracking-widest rounded-DEFAULT">
+                    TGHU 940129 8
+                  </div>
+</div>
+</div>
+<!-- OCR Controls and Critical Warning -->
+<div class="md:col-span-7 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] text-secondary uppercase font-semibold">Detected Match</span>
+<span class="inline-flex items-center gap-1 font-label-tabular text-[10px] px-1.5 py-0.5 bg-amber-100 text-amber-900 rounded-DEFAULT font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                    Pending Manual Confirmation
+                  </span>
+</div>
+<div class="flex gap-space-xs">
+<input class="flex-1 h-7 px-2 font-code-container-id-sm text-code-container-id-sm bg-surface-container-lowest text-on-surface rounded-DEFAULT font-bold" readonly="" type="text" value="TGHU-940129-8"/>
+<button class="h-7 px-space-xs bg-primary text-on-primary font-label-caps text-[10px] rounded-DEFAULT hover:bg-primary-container transition-colors uppercase font-bold">Accept OCR</button>
+<button class="h-7 px-space-xs bg-surface-container-highest text-secondary hover:text-on-surface font-label-caps text-[10px] rounded-DEFAULT transition-colors uppercase">Re-Scan</button>
+</div>
+<!-- Warning Notice -->
+<div class="bg-amber-50 rounded-DEFAULT p-1.5 flex items-start gap-1.5">
+<span class="material-symbols-outlined text-amber-800 text-[15px] shrink-0 mt-0.5">warning</span>
+<p class="font-body-sm text-[11px] leading-tight text-amber-950 font-medium">
+                    Suggested ID requires manual physical inspection before intake confirmation. Never treat OCR as infallible.
+                  </p>
+</div>
+</div>
+</div>
+</div>
+<!-- ISO Container Specification Selector -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-caps text-label-caps text-secondary uppercase font-semibold">ISO Equipment Type &amp; Form Factor</label>
+<div class="grid grid-cols-2 sm:grid-cols-5 gap-space-xs">
+<button class="px-2 py-1.5 bg-primary text-on-primary rounded-DEFAULT flex flex-col items-center justify-center text-center shadow-sm" type="button">
+<span class="font-code-container-id text-code-container-id-sm font-bold">40HC</span>
+<span class="font-label-caps text-[9px] uppercase opacity-90">High Cube Dry (42G1)</span>
+</button>
+<button class="px-2 py-1.5 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded-DEFAULT flex flex-col items-center justify-center text-center transition-colors" type="button">
+<span class="font-code-container-id text-code-container-id-sm font-bold">20GP</span>
+<span class="font-label-caps text-[9px] text-secondary uppercase">Standard Dry (22G1)</span>
+</button>
+<button class="px-2 py-1.5 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded-DEFAULT flex flex-col items-center justify-center text-center transition-colors" type="button">
+<span class="font-code-container-id text-code-container-id-sm font-bold">40HR</span>
+<span class="font-label-caps text-[9px] text-secondary uppercase">Reefer Temp (42R1)</span>
+</button>
+<button class="px-2 py-1.5 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded-DEFAULT flex flex-col items-center justify-center text-center transition-colors" type="button">
+<span class="font-code-container-id text-code-container-id-sm font-bold">40OT</span>
+<span class="font-label-caps text-[9px] text-secondary uppercase">Open Top (42U1)</span>
+</button>
+<button class="px-2 py-1.5 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded-DEFAULT flex flex-col items-center justify-center text-center transition-colors col-span-2 sm:col-span-1" type="button">
+<span class="font-code-container-id text-code-container-id-sm font-bold">20TK</span>
+<span class="font-label-caps text-[9px] text-secondary uppercase">Tank ISO (22T1)</span>
+</button>
+</div>
+</div>
+<!-- Physical Metrics & Scaled Weight -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-sm pt-space-xs">
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-[10px] text-secondary uppercase font-semibold">Dimensions (L × W × H)</span>
+<div class="h-8 px-2 bg-surface-container-low rounded-DEFAULT flex items-center font-label-tabular text-[11px] text-on-surface truncate">
+                40' × 8' × 9'6" (HC)
+              </div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] text-secondary uppercase font-semibold">Gross Weight (VGM)</span>
+<span class="text-primary font-code-container-id-sm text-[10px]">SCALED ✓</span>
+</div>
+<div class="h-8 px-2 bg-primary-fixed text-on-primary-fixed rounded-DEFAULT flex items-center justify-between font-code-container-id-sm text-code-container-id-sm font-bold">
+<span>28,450 KG</span>
+<span class="material-symbols-outlined text-[14px]">scale</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-[10px] text-secondary uppercase font-semibold">Tare Weight</span>
+<div class="h-8 px-2 bg-surface-container-low rounded-DEFAULT flex items-center font-label-tabular text-label-tabular text-on-surface">
+                3,880 KG
+              </div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-[10px] text-secondary uppercase font-semibold">Max Net Payload</span>
+<div class="h-8 px-2 bg-surface-container-low rounded-DEFAULT flex items-center font-label-tabular text-label-tabular text-on-surface">
+                32,500 KG
+              </div>
+</div>
+</div>
+<!-- Hazmat Quick Toggle -->
+<div class="pt-space-xs flex items-center justify-between bg-surface-container-low px-space-sm py-space-xs rounded-DEFAULT">
+<label class="flex items-center gap-space-xs cursor-pointer select-none">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-label-caps text-label-caps text-on-surface uppercase font-bold">HAZMAT / Dangerous Cargo Placard Present (IMDG)</span>
+</label>
+<span class="font-code-container-id-sm text-code-container-id-sm text-secondary bg-surface-container-highest px-2 py-0.5 rounded-DEFAULT">
+              UN CODE: N/A (GENERAL CARGO)
+            </span>
+</div>
+</div>
+</section>
+<!-- STEP 2: Ingate Logistics & Carrier Manifest -->
+<section class="bg-surface-container-lowest rounded-DEFAULT shadow-sm overflow-hidden">
+<div class="h-9 px-space-md bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-5 h-5 rounded-DEFAULT bg-primary text-on-primary flex items-center justify-center font-code-container-id-sm text-code-container-id-sm">2</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider font-bold">Ingate Logistics &amp; Carrier Manifest</span>
+</div>
+<span class="font-label-tabular text-code-container-id-sm text-secondary">TRANSACTION ID: ING-2026-9041</span>
+</div>
+<div class="p-space-md grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Arrival Timestamp -->
+<div class="flex flex-col gap-1">
+<label class="font-label-caps text-label-caps text-secondary uppercase font-semibold">Arrival Date / Time</label>
+<div class="flex gap-space-xs">
+<input class="flex-1 h-8 px-2 bg-surface-container-low rounded-DEFAULT font-label-tabular text-label-tabular text-on-surface font-semibold" type="text" value="2026-10-17 14:15:00 UTC"/>
+<button class="h-8 px-space-xs bg-surface-container-high hover:bg-surface-container-highest text-secondary text-[11px] font-label-caps uppercase rounded-DEFAULT">Set Now</button>
+</div>
+</div>
+<!-- Carrier / Shipping Line -->
+<div class="flex flex-col gap-1">
+<label class="font-label-caps text-label-caps text-secondary uppercase font-semibold">Shipping Line / Operator</label>
+<div class="relative">
+<select class="w-full h-8 px-2 pr-7 bg-surface-container-low text-on-surface rounded-DEFAULT font-label-tabular text-label-tabular appearance-none font-bold">
+<option selected="">Hapag-Lloyd (HLAG) · Line Account #9901</option>
+<option>Maersk Line (MAEU)</option>
+<option>CMA CGM Group (CMAU)</option>
+<option>Mediterranean Shipping Co (MSCU)</option>
+<option>Ocean Network Express (ONEY)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 text-secondary text-[16px] pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Haulier / Truck Registration -->
+<div class="flex flex-col gap-1">
+<label class="font-label-caps text-label-caps text-secondary uppercase font-semibold">Haulier / Vehicle Tag</label>
+<input class="h-8 px-2 bg-surface-container-low rounded-DEFAULT font-code-container-id-sm text-code-container-id-sm text-on-surface font-semibold" type="text" value="TRK-8821 · Trans-Atlantic Logistics Inc."/>
+</div>
+<!-- Ocean Bill of Lading (B/L) -->
+<div class="flex flex-col gap-1">
+<label class="font-label-caps text-label-caps text-secondary uppercase font-semibold">Ocean Bill of Lading (B/L)</label>
+<input class="h-8 px-2 bg-surface-container-low rounded-DEFAULT font-code-container-id-sm text-code-container-id-sm text-on-surface uppercase font-bold" type="text" value="HLCUHAM249910-EU"/>
+</div>
+<!-- Bolt Seal Verification -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<label class="font-label-caps text-label-caps text-secondary uppercase font-semibold">Bolt Seal Number</label>
+<span class="font-label-caps text-[10px] text-primary font-bold">ISO 17712 HSS ✓</span>
+</div>
+<div class="flex gap-space-xs">
+<input class="flex-1 h-8 px-2 bg-surface-container-low rounded-DEFAULT font-code-container-id text-code-container-id-sm text-on-surface uppercase font-bold" type="text" value="MS-992014-X"/>
+<label class="h-8 px-2 bg-surface-container-high rounded-DEFAULT flex items-center gap-1.5 cursor-pointer text-[11px] font-label-caps text-on-surface">
+<input checked="" class="w-3.5 h-3.5 text-primary rounded" type="checkbox"/>
+<span>SEAL INTACT</span>
+</label>
+</div>
+</div>
+<!-- Driver ID / Badge -->
+<div class="flex flex-col gap-1">
+<label class="font-label-caps text-label-caps text-secondary uppercase font-semibold">Driver ID &amp; Biometric Gate Badge</label>
+<div class="h-8 px-2 bg-surface-container-low rounded-DEFAULT flex items-center justify-between font-label-tabular text-label-tabular text-on-surface">
+<span>D-4402 (M. Kowalski)</span>
+<span class="text-primary font-code-container-id-sm text-[10px]">BADGE SCANNED</span>
+</div>
+</div>
+<!-- Manifest Notes / Direct Staging Instruction -->
+<div class="md:col-span-2 flex flex-col gap-1">
+<label class="font-label-caps text-label-caps text-secondary uppercase font-semibold">Handover &amp; Terminal Dispatch Notes</label>
+<textarea class="w-full p-2 bg-surface-container-low text-on-surface rounded-DEFAULT font-body-sm text-body-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none" rows="2">Direct discharge from Terminal Ingate Lane 2. Destination staging for rail connection R-02 tomorrow 06:00. Prioritize heavy ground grounding.</textarea>
+</div>
+</div>
+</section>
+<!-- STEP 3: Storage Assignment & Slot Engine -->
+<section class="bg-surface-container-lowest rounded-DEFAULT shadow-sm overflow-hidden">
+<div class="h-9 px-space-md bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-5 h-5 rounded-DEFAULT bg-primary text-on-primary flex items-center justify-center font-code-container-id-sm text-code-container-id-sm">3</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider font-bold">Yard-Slot Assignment Controls</span>
+</div>
+<span class="inline-flex items-center gap-1 font-label-tabular text-code-container-id-sm text-primary font-semibold">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+            RTG DISPATCH READY
+          </span>
+</div>
+<div class="p-space-md flex flex-col gap-space-md">
+<!-- 4-Coordinate Dropdowns -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm">
+<div class="flex flex-col gap-1">
+<label class="font-label-caps text-[10px] text-secondary uppercase font-semibold">Yard Block</label>
+<select class="h-8 px-2 bg-surface-container-low text-on-surface rounded-DEFAULT font-label-tabular text-label-tabular font-bold">
+<option selected="">Block B02 (Export)</option>
+<option>Block B01 (Import Core)</option>
+<option>Block B03 (Reefer Rack)</option>
+<option>Block E01 (Empty Depot)</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-caps text-[10px] text-secondary uppercase font-semibold">Row (Track)</label>
+<select class="h-8 px-2 bg-surface-container-low text-on-surface rounded-DEFAULT font-label-tabular text-label-tabular font-bold">
+<option>R-01 (Lane A)</option>
+<option selected="">R-02 (Lane B)</option>
+<option>R-03 (Lane C)</option>
+<option>R-04 (Lane D)</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-caps text-[10px] text-secondary uppercase font-semibold">Bay (40ft / 20ft)</label>
+<select class="h-8 px-2 bg-surface-container-low text-on-surface rounded-DEFAULT font-label-tabular text-label-tabular font-bold">
+<option>Bay 02 (40ft)</option>
+<option selected="">Bay 04 (40ft High)</option>
+<option>Bay 06 (40ft)</option>
+<option>Bay 08 (40ft)</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-caps text-[10px] text-secondary uppercase font-semibold">Tier Level</label>
+<select class="h-8 px-2 bg-surface-container-low text-on-surface rounded-DEFAULT font-label-tabular text-label-tabular font-bold">
+<option selected="">Tier 1 (Ground Pad)</option>
+<option disabled="">Tier 2 (Locked · Requires Ground)</option>
+<option disabled="">Tier 3 (Locked)</option>
+</select>
+</div>
+</div>
+<!-- Slot Coordinate Display Strip -->
+<div class="bg-surface-container-low rounded-DEFAULT p-space-sm flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-DEFAULT bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[20px]">location_on</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-secondary uppercase">Assigned Slot Coordinate</span>
+<span class="font-code-container-id text-code-container-id text-on-surface font-extrabold tracking-wider">YD01-B02-R02-BY04-T1</span>
+</div>
+</div>
+<div class="flex flex-col items-start sm:items-end">
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-DEFAULT bg-primary-fixed text-on-primary-fixed font-code-container-id-sm text-code-container-id-sm font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                SLOT CLEARED · REINFORCED PAD (35T CAP OK)
+              </span>
+<span class="font-body-sm text-[11px] text-secondary mt-0.5">Tier 2/3 unlocked automatically once Tier 1 is seated.</span>
+</div>
+</div>
+</div>
+</section>
+<!-- STEP 4: Ingate Final Review Strip & Submission Action -->
+<section class="bg-surface-container-lowest rounded-DEFAULT shadow-sm p-space-md flex flex-col gap-space-sm">
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-secondary uppercase font-bold">Terminal Ingate Pre-Flight Cleared</span>
+<span class="font-code-container-id-sm text-code-container-id-sm text-primary font-bold">5 OF 5 CHECKS PASSED</span>
+</div>
+<!-- Progress bar -->
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden flex">
+<div class="w-full bg-primary h-full"></div>
+</div>
+<div class="flex flex-wrap items-center justify-between font-label-tabular text-[11px] text-secondary pt-0.5">
+<span>✓ ISO MOD-11 Checksum</span>
+<span>✓ High-Security Seal</span>
+<span>✓ Certified VGM</span>
+<span>✓ Non-Hazmat Cleared</span>
+<span>✓ Physical Slot Reserved</span>
+</div>
+</div>
+<div class="bg-surface-container-low px-space-sm py-2 rounded-DEFAULT flex items-center justify-between">
+<div class="flex items-center gap-space-sm overflow-hidden">
+<span class="material-symbols-outlined text-primary text-[18px]">fact_check</span>
+<span class="font-code-container-id-sm text-code-container-id-sm text-on-surface font-bold truncate">
+              TGHU-940129-8 · 40HC · 28,450 KG · B02-R02-BY04-T1 · HLAG
+            </span>
+</div>
+<span class="font-label-caps text-[10px] text-secondary font-bold uppercase shrink-0">READY FOR DISPATCH</span>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs">
+<div class="flex items-center gap-space-xs">
+<button class="h-9 px-space-md bg-surface-container-high hover:bg-surface-container-highest text-secondary hover:text-on-surface font-label-caps text-label-caps uppercase rounded-DEFAULT transition-colors">
+              Cancel / Gate Hold
+            </button>
+<button class="h-9 px-space-sm bg-surface-container-high hover:bg-surface-container-highest text-secondary hover:text-on-surface rounded-DEFAULT flex items-center justify-center transition-colors" title="Print physical gate slip">
+<span class="material-symbols-outlined text-[18px]">print</span>
+</button>
+</div>
+<button class="h-10 px-space-lg bg-primary hover:bg-primary-container active:scale-[0.99] text-on-primary font-label-caps text-label-caps tracking-wider uppercase rounded-DEFAULT flex items-center gap-space-xs shadow-md transition-all font-bold" id="dispatch-btn">
+<span class="material-symbols-outlined text-[18px]">move_to_inbox</span>
+<span>+ Register Container &amp; Dispatch Work Order</span>
+</button>
+</div>
+</section>
+</div>
+<!-- RIGHT COLUMN: Tactical Matrix & Stacking Telemetry (5 cols on 12-col grid ≈ 42%) -->
+<div class="xl:col-span-5 flex flex-col gap-space-lg">
+<!-- CARD 1: Selected Slot Spatial Summary -->
+<div class="bg-surface-container-lowest rounded-DEFAULT shadow-sm overflow-hidden">
+<div class="h-9 px-space-md bg-surface-container-high flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider font-bold">Target Location Position</span>
+<span class="font-code-container-id-sm text-code-container-id-sm text-primary font-bold">SLOT ID #8841</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<div class="flex items-baseline justify-between">
+<span class="font-code-container-id text-headline-sm text-primary font-extrabold tracking-tight">YD01-B02-R02-BY04-T1</span>
+<span class="inline-flex items-center gap-1 font-label-tabular text-code-container-id-sm px-1.5 py-0.5 bg-primary-fixed text-on-primary-fixed rounded-DEFAULT font-bold">
+              PAD REINFORCED
+            </span>
+</div>
+<div class="grid grid-cols-3 gap-space-xs pt-space-xs font-label-tabular text-[11px]">
+<div class="p-1.5 bg-surface-container-low rounded-DEFAULT flex flex-col">
+<span class="font-label-caps text-[9px] text-secondary uppercase">Facility</span>
+<span class="text-on-surface font-semibold">North Yard (YD01)</span>
+</div>
+<div class="p-1.5 bg-surface-container-low rounded-DEFAULT flex flex-col">
+<span class="font-label-caps text-[9px] text-secondary uppercase">Sector</span>
+<span class="text-on-surface font-semibold">Block B02 Export</span>
+</div>
+<div class="p-1.5 bg-surface-container-low rounded-DEFAULT flex flex-col">
+<span class="font-label-caps text-[9px] text-secondary uppercase">Ground Bearing</span>
+<span class="text-on-surface font-semibold">35 Metric Tons</span>
+</div>
+</div>
+</div>
+</div>
+<!-- CARD 2: Block B02 Layout Preview Grid -->
+<div class="bg-surface-container-lowest rounded-DEFAULT shadow-sm overflow-hidden flex flex-col">
+<div class="h-9 px-space-md bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">view_quilt</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider font-bold">Block B02 Matrix Telemetry</span>
+</div>
+<span class="font-label-tabular text-code-container-id-sm text-secondary">23/32 CELLS FULL (71%)</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm">
+<!-- Tactical Matrix Canvas -->
+<div class="bg-surface-container-low p-2 rounded-DEFAULT flex flex-col gap-1.5 overflow-x-auto">
+<!-- Bay column header indicators -->
+<div class="grid grid-cols-9 gap-1 font-label-tabular text-[10px] text-secondary text-center font-bold">
+<div class="text-left pl-1">ROW</div>
+<div>01</div>
+<div>02</div>
+<div>03</div>
+<div class="text-primary underline">04</div>
+<div>05</div>
+<div>06</div>
+<div>07</div>
+<div>08</div>
+</div>
+<!-- ROW 01 -->
+<div class="grid grid-cols-9 gap-1 items-center">
+<span class="font-code-container-id-sm text-[10px] text-secondary font-bold pl-1">R-01</span>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">MSCU</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">MAEU</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">CMAU</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">HLAG</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">ONEY</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">COSU</div>
+<div class="h-7 bg-surface-container-lowest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-secondary/60 border border-dashed border-surface-dim">--</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">MAEU</div>
+</div>
+<!-- ROW 02 (Contains Active Target at Bay 04) -->
+<div class="grid grid-cols-9 gap-1 items-center bg-primary-fixed/30 p-0.5 rounded-DEFAULT">
+<span class="font-code-container-id-sm text-[10px] text-primary font-bold pl-1">R-02</span>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">HLAG</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">MSCU</div>
+<div class="h-7 bg-surface-container-lowest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-secondary/60 border border-dashed border-surface-dim">--</div>
+<!-- Selected Target Slot -->
+<div class="h-7 bg-primary text-on-primary rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] font-bold ring-2 ring-primary ring-offset-1 animate-pulse">
+                TARGET
+              </div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">CMAU</div>
+<div class="h-7 bg-amber-100 text-amber-900 rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] font-bold">RESV</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">HLAG</div>
+<div class="h-7 bg-surface-container-lowest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-secondary/60 border border-dashed border-surface-dim">--</div>
+</div>
+<!-- ROW 03 -->
+<div class="grid grid-cols-9 gap-1 items-center">
+<span class="font-code-container-id-sm text-[10px] text-secondary font-bold pl-1">R-03</span>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">ONEY</div>
+<!-- Blocked slot -->
+<div class="h-7 bg-error-container text-on-error-container rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] font-bold">BLKD</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">COSU</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">MAEU</div>
+<div class="h-7 bg-surface-container-lowest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-secondary/60 border border-dashed border-surface-dim">--</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">HLAG</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">MSCU</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">CMAU</div>
+</div>
+<!-- ROW 04 -->
+<div class="grid grid-cols-9 gap-1 items-center">
+<span class="font-code-container-id-sm text-[10px] text-secondary font-bold pl-1">R-04</span>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">HLAG</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">MAEU</div>
+<div class="h-7 bg-surface-container-lowest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-secondary/60 border border-dashed border-surface-dim">--</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">ONEY</div>
+<div class="h-7 bg-surface-container-lowest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-secondary/60 border border-dashed border-surface-dim">--</div>
+<div class="h-7 bg-surface-container-lowest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-secondary/60 border border-dashed border-surface-dim">--</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">COSU</div>
+<div class="h-7 bg-surface-container-highest rounded-DEFAULT flex items-center justify-center font-code-container-id-sm text-[10px] text-on-surface-variant">HLAG</div>
+</div>
+</div>
+<!-- Yard Grid Legend -->
+<div class="flex flex-wrap items-center justify-between font-label-tabular text-[10px] text-secondary pt-0.5">
+<span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 bg-primary rounded-DEFAULT"></span>Target (Selected)</span>
+<span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 bg-surface-container-highest rounded-DEFAULT"></span>Occupied</span>
+<span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 bg-surface-container-lowest border border-dashed border-surface-dim rounded-DEFAULT"></span>Available</span>
+<span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 bg-amber-200 rounded-DEFAULT"></span>Reserved</span>
+<span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 bg-error-container rounded-DEFAULT"></span>Blocked</span>
+</div>
+</div>
+</div>
+<!-- CARD 3: Container Type & Profile Details -->
+<div class="bg-surface-container-lowest rounded-DEFAULT shadow-sm overflow-hidden">
+<div class="h-9 px-space-md bg-surface-container-high flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider font-bold">Container Form Profile · 40HC</span>
+<span class="font-label-tabular text-code-container-id-sm text-secondary">ISO 1161 CASTING OK</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm">
+<!-- Dimensional Stacking Schematic (SVG inline) -->
+<div class="bg-surface-container-low p-space-sm rounded-DEFAULT flex items-center justify-center">
+<svg class="w-full max-w-[340px] h-20 text-primary" fill="none" viewbox="0 0 340 70">
+<!-- Outline 40HC box -->
+<rect fill="#eaedff" height="48" rx="2" stroke="currentColor" stroke-dasharray="3 1" stroke-width="1.5" width="300" x="20" y="8"></rect>
+<!-- Corrugation lines -->
+<line opacity="0.4" stroke="currentColor" stroke-width="0.7" x1="60" x2="60" y1="8" y2="56"></line>
+<line opacity="0.4" stroke="currentColor" stroke-width="0.7" x1="100" x2="100" y1="8" y2="56"></line>
+<line opacity="0.4" stroke="currentColor" stroke-width="0.7" x1="140" x2="140" y1="8" y2="56"></line>
+<line opacity="0.4" stroke="currentColor" stroke-width="0.7" x1="180" x2="180" y1="8" y2="56"></line>
+<line opacity="0.4" stroke="currentColor" stroke-width="0.7" x1="220" x2="220" y1="8" y2="56"></line>
+<line opacity="0.4" stroke="currentColor" stroke-width="0.7" x1="260" x2="260" y1="8" y2="56"></line>
+<!-- Corner Castings -->
+<rect fill="currentColor" height="10" width="10" x="20" y="8"></rect>
+<rect fill="currentColor" height="10" width="10" x="310" y="8"></rect>
+<rect fill="currentColor" height="10" width="10" x="20" y="46"></rect>
+<rect fill="currentColor" height="10" width="10" x="310" y="46"></rect>
+<!-- Center of Gravity indicator -->
+<circle cx="170" cy="32" r="5" stroke="currentColor" stroke-width="1.5"></circle>
+<line stroke="currentColor" stroke-width="1.5" x1="162" x2="178" y1="32" y2="32"></line>
+<line stroke="currentColor" stroke-width="1.5" x1="170" x2="170" y1="24" y2="40"></line>
+<!-- Dimension markers -->
+<text fill="#515f74" font-family="JetBrains Mono" font-size="9" text-anchor="middle" x="170" y="66">LENGTH: 40' 0" (12.192 m)</text>
+<text fill="#515f74" font-family="JetBrains Mono" font-size="9" text-anchor="middle" transform="rotate(-90 8 35)" x="5" y="35">9'6" HC</text>
+</svg>
+</div>
+<div class="grid grid-cols-2 gap-space-xs font-label-tabular text-[11px]">
+<div class="p-1.5 bg-surface-container-low rounded-DEFAULT flex justify-between">
+<span class="text-secondary font-label-caps text-[9px] uppercase">Stack Load Rating</span>
+<span class="text-on-surface font-bold">336 kN / Stack</span>
+</div>
+<div class="p-1.5 bg-surface-container-low rounded-DEFAULT flex justify-between">
+<span class="text-secondary font-label-caps text-[9px] uppercase">Corner Casting</span>
+<span class="text-primary font-bold">ISO 1161 PASS</span>
+</div>
+</div>
+</div>
+</div>
+<!-- CARD 4: Verification Guidance & Operational Checklist -->
+<div class="bg-surface-container-lowest rounded-DEFAULT shadow-sm overflow-hidden">
+<div class="h-9 px-space-md bg-surface-container-high flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">security</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider font-bold">Terminal Intake Verification Protocol</span>
+</div>
+<span class="font-code-container-id-sm text-code-container-id-sm text-secondary">TOS SOP-09</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<ul class="flex flex-col gap-1.5 font-body-sm text-[12px] text-on-surface-variant">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[15px] shrink-0 mt-0.5">check_circle</span>
+<span><strong>1. Physical ISO Checksum:</strong> Match 100% with stenciled number (ISO Rule 6346 mod 11).</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[15px] shrink-0 mt-0.5">check_circle</span>
+<span><strong>2. Optical Seal Inspection:</strong> High-security bolt seal intact; serial stamped on B/L.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[15px] shrink-0 mt-0.5">check_circle</span>
+<span><strong>3. Verified Gross Mass (VGM):</strong> Weighbridge reading within allowable 1.2% variance.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[15px] shrink-0 mt-0.5">check_circle</span>
+<span><strong>4. Tier Grounding Clearance:</strong> Tier 1 foundation assigned on reinforced pad (35T).</span>
+</li>
+</ul>
+<div class="mt-space-xs p-space-xs bg-surface-container-low rounded-DEFAULT flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[16px]">info</span>
+<span class="font-body-sm text-[11px] text-secondary">Any seal tampering or weight discrepancy &gt;3.5% requires immediate yard superintendent override.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Content Footer Status Telemetry Bar -->
+<div class="mx-margin mb-space-md px-space-md py-1.5 bg-surface-container-lowest rounded-DEFAULT shadow-sm flex flex-wrap items-center justify-between font-label-tabular text-[11px] text-secondary">
+<div class="flex items-center gap-space-md overflow-x-auto">
+<span class="inline-flex items-center gap-1.5 font-semibold text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+        RTG CRANE 01 ASSIGNED TO B02
+      </span>
+<span>|</span>
+<span>REACH STACKER RS-03 IDLE LANE 02</span>
+<span>|</span>
+<span>INGATE OCR ACCURACY: 98.4% (LAST 24H)</span>
+</div>
+<div class="flex items-center gap-space-xs text-primary font-code-container-id-sm">
+<span>WORK ORDER QUEUE: READY</span>
+</div>
+</div>
+</div>
+<script>
+  // Micro-interaction: Dispatch Button Feedback
+  const dispatchBtn = document.getElementById('dispatch-btn');
+  const containerInput = document.getElementById('container-id-input');
+
+  if (dispatchBtn && containerInput) {
+    dispatchBtn.addEventListener('click', () => {
+      const originalHTML = dispatchBtn.innerHTML;
+      dispatchBtn.disabled = true;
+      dispatchBtn.classList.add('opacity-75');
+      dispatchBtn.innerHTML = `
+        <span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+        <span>DISPATCHING WORK ORDER...</span>
+      `;
+      setTimeout(() => {
+        dispatchBtn.innerHTML = `
+          <span class="material-symbols-outlined text-[18px]">done_all</span>
+          <span>INTAKE COMPLETED · WO #44091</span>
+        `;
+        setTimeout(() => {
+          dispatchBtn.innerHTML = originalHTML;
+          dispatchBtn.disabled = false;
+          dispatchBtn.classList.remove('opacity-75');
+        }, 2500);
+      }, 1200);
+    });
+
+    // Keyboard shortcut handler [Cmd/Ctrl + Enter]
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        dispatchBtn.click();
+      }
+    });
+  }
+</script></main></div><footer class="fixed bottom-0 left-0 right-0 h-7 bg-inverse-surface text-inverse-on-surface z-50 px-margin flex items-center justify-between font-label-tabular text-[11px] border-t border-inverse-surface"><div class="flex items-center gap-space-lg overflow-x-auto whitespace-nowrap"><span class="inline-flex items-center gap-1.5 text-on-primary-container font-semibold"><span class="w-2 h-2 rounded-full bg-inverse-primary animate-pulse"></span>TOS PRIMARY LINK: 100% OPERATIONAL</span><span class="text-outline-variant">|</span><span class="text-surface-variant">REACH STACKERS: 3/3 ACTIVE</span><span class="text-outline-variant">|</span><span class="text-surface-variant">RTG CRANES: 2 DISPATCHED</span><span class="text-outline-variant">|</span><span class="text-surface-variant">GATE TURN TIME: 18.4 MIN AVG</span></div><div class="flex items-center gap-space-md text-surface-variant font-code-container-id-sm shrink-0"><span>LATENCY: 12ms</span><span>PORT 443 SECURE</span></div></footer></body></html>

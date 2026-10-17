@@ -1,0 +1,9 @@
+node_modules
+.next
+.next-e2e
+data
+output
+test-results
+package-lock.json
+next-env.d.ts
+public/ocr
