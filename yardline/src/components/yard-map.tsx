@@ -531,7 +531,6 @@ export function SlotDetails({
   onVerify,
   onSlotStatus,
   onSelect,
-  onRegister,
 }: {
   data: Snapshot;
   slot?: Slot;
@@ -541,7 +540,6 @@ export function SlotDetails({
   onVerify: (c: Container) => void;
   onSlotStatus: (s: Slot, status: string) => void;
   onSelect: (s: Slot) => void;
-  onRegister: (s: Slot) => void;
 }) {
   const canEdit = data.actor.role !== 'viewer';
   const stack = slot
@@ -708,11 +706,6 @@ export function SlotDetails({
             </>
           ) : (
             <>
-              {canEdit && slot?.status === 'available' ? (
-                <Button onClick={() => onRegister(slot)} className="full-width">
-                  Register in this position
-                </Button>
-              ) : null}
               {data.actor.role === 'administrator' && slot ? (
                 <label className="field slot-status-field">
                   <span>Position status</span>

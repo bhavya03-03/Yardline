@@ -19,7 +19,6 @@ import {
   LogOut,
   MapPin,
   Menu,
-  Plus,
   RefreshCw,
   Search,
   Settings2,
@@ -32,16 +31,14 @@ import type { Container, Movement, Slot, Snapshot } from '@/lib/types';
 import { api, authClient, exportCsv } from '@/lib/client-api';
 import { Badge, Button, Empty, Field, relative, time } from './ui';
 import { Legend, SlotDetails, YardMap } from './yard-map';
-import { ConfirmOperation, MoveModal, RegisterForm, type Mutate } from './workflows';
+import { ConfirmOperation, MoveModal, type Mutate } from './workflows';
 import { Configuration } from './configuration';
 
-type Page =
-  'overview' | 'map' | 'containers' | 'register' | 'history' | 'configuration' | 'settings';
+type Page = 'overview' | 'map' | 'containers' | 'history' | 'configuration' | 'settings';
 const nav = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
   { id: 'map', label: 'Yard Map', icon: Grid2X2 },
   { id: 'containers', label: 'Containers', icon: ContainerIcon },
-  { id: 'register', label: 'Register Container', icon: Plus },
   { id: 'history', label: 'Movement History', icon: History },
   { id: 'configuration', label: 'Yard Configuration', icon: SlidersHorizontal },
   { id: 'settings', label: 'Settings', icon: Settings2 },
@@ -58,10 +55,6 @@ const pageMeta: Record<Page, { title: string; subtitle: string }> = {
   containers: {
     title: 'Container inventory',
     subtitle: 'Every arrival, recorded position, and container ready to move.',
-  },
-  register: {
-    title: 'Register container',
-    subtitle: 'Identify the container, then confirm where it was physically placed.',
   },
   history: {
     title: 'Movement history',
@@ -96,8 +89,7 @@ export default function YardlineApp() {
     [confirmation, setConfirmation] = useState<{
       container: Container;
       kind: 'dispatch' | 'verify';
-    } | null>(null),
-    [preferredSlot, setPreferredSlot] = useState<string | null>(null);
+    } | null>(null);
   const searchRef = useRef<HTMLDivElement>(null),
     sidebarToggleRef = useRef<HTMLButtonElement>(null),
     sidebarExpandRef = useRef<HTMLButtonElement>(null),
@@ -130,10 +122,19 @@ export default function YardlineApp() {
   const activeYardId = data?.yard.id;
   useEffect(() => {
     if (!activeYardId) return;
-    const id = setInterval(() => {
+    const refresh = () => {
       if (!document.hidden) void load(activeYardId, true);
-    }, 30000);
-    return () => clearInterval(id);
+    };
+    const id = setInterval(refresh, 30000);
+    document.addEventListener('visibilitychange', refresh);
+    window.addEventListener('focus', refresh);
+    window.addEventListener('online', refresh);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener('visibilitychange', refresh);
+      window.removeEventListener('focus', refresh);
+      window.removeEventListener('online', refresh);
+    };
   }, [activeYardId, load]); // Periodic reads, not physical tracking.
   useEffect(() => {
     if (!toast) return;
@@ -201,12 +202,6 @@ export default function YardlineApp() {
       setBlockId(slot.block_id);
       setTier(slot.tier);
     } else setBlockId(null);
-  }
-  function registered(id: string, state: Snapshot) {
-    const c = state.containers.find((c) => c.id === id)!;
-    locate(c, state);
-    setPreferredSlot(null);
-    setToast(`${c.number} registered${c.current_slot_id ? ' and assigned' : ' as unassigned'}.`);
   }
   function moved(state: Snapshot) {
     const id = moveTarget!.id,
@@ -472,17 +467,6 @@ export default function YardlineApp() {
             ) : null}
           </div>
           <div className="toolbar-actions">
-            {data.actor.role !== 'viewer' ? (
-              <Button
-                onClick={() => {
-                  setPreferredSlot(null);
-                  navigate('register');
-                }}
-              >
-                <Plus size={15} />
-                Register container
-              </Button>
-            ) : null}
             <button
               className="toolbar-avatar"
               aria-label="Open account profile"
@@ -638,10 +622,6 @@ export default function YardlineApp() {
                   onVerify={(c) => setConfirmation({ container: c, kind: 'verify' })}
                   onSlotStatus={(s, status) => void changeSlot(s, status)}
                   onSelect={selectSlot}
-                  onRegister={(s) => {
-                    setPreferredSlot(s.id);
-                    navigate('register');
-                  }}
                 />
               </div>
               <div className="below-map">
@@ -683,15 +663,6 @@ export default function YardlineApp() {
           ) : null}
           {page === 'containers' ? (
             <ContainerTable data={data} onLocate={locate} onMove={setMoveTarget} />
-          ) : null}
-          {page === 'register' ? (
-            <RegisterForm
-              key={`${data.yard.id}-${preferredSlot ?? ''}`}
-              data={data}
-              mutate={mutate}
-              preferredSlot={preferredSlot}
-              onRegistered={registered}
-            />
           ) : null}
           {page === 'history' ? <HistoryTable data={data} onLocate={locate} /> : null}
           {page === 'configuration' ? (

@@ -19,8 +19,9 @@ async function openNav(page: Page, name: string) {
   await page.getByRole('navigation').getByRole('button', { name, exact: true }).click();
 }
 
-test('complete judging sequence: persisted map, search, relocation, history, registration, metrics and dispatch', async ({
+test('shared workflow: map, relocation, mobile API registration, dashboard synchronization and dispatch', async ({
   page,
+  request,
 }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
@@ -71,32 +72,32 @@ test('complete judging sequence: persisted map, search, relocation, history, reg
   await expect(page.getByRole('row').filter({ hasText: 'relocation' })).toContainText(
     destination.code,
   );
-  await openNav(page, 'Register Container');
+  await expect(page.getByRole('button', { name: /register/i })).toHaveCount(0);
   const firstTen = 'TSTU' + String(920000 + Math.floor(Math.random() * 70000));
   const newNumber = firstTen + checkDigit(firstTen);
-  await page.getByRole('textbox', { name: 'Container number', exact: true }).fill(newNumber);
-  await page
-    .getByRole('textbox', { name: 'Shipping line / owner (optional)' })
-    .fill('Hackathon Shipping');
-  await page.getByRole('checkbox', { name: /I have checked/ }).check();
-  await page.getByRole('button', { name: 'Continue to placement' }).click();
   const newSlot = moved.slots.find((s) => s.code === 'YD01-B03-R04-BY01-T01')!;
-  await page
-    .getByRole('combobox', { name: 'Preview storage block' })
-    .selectOption(newSlot.block_id);
-  await page.locator(`[data-slot-id="${newSlot.id}"]`).click();
-  await page.getByRole('checkbox', { name: /I confirm this container is physically/ }).check();
-  await page.getByRole('button', { name: 'Register & assign container' }).click();
-  await expect(page.locator('.container-summary h3')).toHaveText(newNumber);
-  await expect(page.locator('.location-address strong')).toHaveText(newSlot.code);
+  // A separate client uses the same operator session and registration endpoint as Flutter.
+  expect((await request.post('/api/session', { data: { role: 'operator' } })).ok()).toBeTruthy();
+  const registration = await request.post('/api/actions/register', {
+    data: {
+      yardId: initial.yard.id,
+      number: newNumber,
+      size: 40,
+      owner: 'Hackathon Shipping',
+      slotId: newSlot.id,
+      physicalConfirmed: true,
+    },
+  });
+  expect(registration.ok()).toBeTruthy();
   const registered = await state(page);
   expect(registered.metrics.occupied).toBe(initial.metrics.occupied + 1);
   expect(registered.metrics.available).toBe(initial.metrics.available - 1);
   await openNav(page, 'Overview');
   await expect(
     page.locator('.metric').filter({ hasText: 'Containers in yard' }).locator('.metric-value'),
-  ).toHaveText(String(initial.metrics.occupied + 1));
+  ).toHaveText(String(initial.metrics.occupied + 1), { timeout: 35000 });
   await locate(page, newNumber);
+  await expect(page.locator('.location-address strong')).toHaveText(newSlot.code);
   await page.getByRole('button', { name: 'Dispatch from yard', exact: true }).click();
   await page.getByRole('dialog').getByRole('checkbox').check();
   await page.getByRole('button', { name: 'Confirm dispatch' }).click();
@@ -165,10 +166,9 @@ test('viewer permissions apply in the UI and cannot be bypassed through the API'
   await page.getByLabel('Demo session role').selectOption('viewer');
   await page.getByRole('button', { name: 'Apply demo role' }).click();
   await expect(page.locator('.user-profile small')).toHaveText('viewer');
-  await openNav(page, 'Register Container');
-  await expect(
-    page.getByRole('heading', { name: 'Registration requires an operator role' }),
-  ).toBeVisible();
+  await expect(page.getByRole('button', { name: /register/i })).toHaveCount(0);
+  await locate(page, primaryNumber);
+  await expect(page.getByRole('button', { name: 'Move container', exact: true })).toHaveCount(0);
   const initial = await state(page);
   const result = await page.request.post('/api/actions/register', {
     data: { yardId: initial.yard.id, number: 'TSTU999999' + checkDigit('TSTU999999'), size: 40 },
@@ -241,18 +241,18 @@ test('administrator creates a yard, generates an irregular grid, and sees persis
   await expect(page.locator('[data-slot-id]')).toHaveCount(108);
 });
 
-test('photograph OCR produces an editable result, then corrected identity is saved with its source image', async ({
+test('mobile photo registration appears in web inventory and history when the dashboard regains focus', async ({
   page,
+  request,
 }) => {
-  test.setTimeout(120000);
-  await page.route(/^https?:\/\/(?!127\.0\.0\.1:3100|localhost:3100)/, (route) => route.abort());
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Yard map', exact: true })).toBeVisible();
-  await openNav(page, 'Register Container');
+  const initial = await state(page);
+  await openNav(page, 'Containers');
   const firstTen = 'TSTU880001',
-    correct = firstTen + checkDigit(firstTen),
-    printed = firstTen + ((checkDigit(firstTen)! + 1) % 10);
-  // Synthetic, explicitly test-only photograph. Recognition itself is the real browser OCR engine.
+    correct = firstTen + checkDigit(firstTen);
+  // A synthetic source photo stands in for the image attached by the mobile client.
+  // OCR and human confirmation happen in Flutter, not in this web dashboard test.
   const dataUrl = await page.evaluate((text) => {
     const canvas = document.createElement('canvas');
     canvas.width = 1600;
@@ -264,21 +264,16 @@ test('photograph OCR produces an editable result, then corrected identity is sav
     ctx.font = 'bold 130px Arial';
     ctx.fillText(text, 60, 215);
     return canvas.toDataURL('image/png');
-  }, printed);
-  await page.getByLabel('Upload container photograph').setInputFiles({
-    name: 'test-container-number.png',
-    mimeType: 'image/png',
-    buffer: Buffer.from(dataUrl.split(',')[1], 'base64'),
+  }, correct);
+  expect((await request.post('/api/session', { data: { role: 'operator' } })).ok()).toBeTruthy();
+  const registration = await request.post('/api/actions/register', {
+    data: { yardId: initial.yard.id, number: correct, size: 40, photo: dataUrl },
   });
-  await expect(page.getByAltText('Source photograph for container identification')).toBeVisible();
-  await page.getByRole('button', { name: 'Run OCR recognition' }).click();
-  await expect(page.locator('.ocr-status')).toContainText('candidate', { timeout: 90000 });
-  await expect(page.getByLabel('Container number', { exact: true })).toHaveValue(printed);
-  await page.getByLabel('Container number', { exact: true }).fill(correct);
-  await page.getByRole('checkbox', { name: /I have checked/ }).check();
-  await page.getByRole('button', { name: 'Continue to placement' }).click();
-  await page.getByRole('button', { name: 'Register as unassigned' }).click();
-  await expect(page.locator('.container-summary h3')).toHaveText(correct);
+  expect(registration.ok()).toBeTruthy();
+  await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+  await page.getByRole('textbox', { name: 'Filter container inventory' }).fill(correct);
+  await expect(page.getByRole('row').filter({ hasText: correct })).toContainText('unassigned');
+  await locate(page, correct);
   const stored = await state(page);
   const container = stored.containers.find((c) => c.number === correct)!;
   expect(container.has_photo).toBe(1);
@@ -286,6 +281,10 @@ test('photograph OCR produces an editable result, then corrected identity is sav
   expect(container.identity_verified).toBe(1);
   await page.getByRole('button', { name: 'View attached photograph' }).click();
   await expect(page.getByAltText('Attached container identification photograph')).toBeVisible();
+  await openNav(page, 'Movement History');
+  await page.getByRole('textbox', { name: 'Search movement history' }).fill(correct);
+  await expect(page.getByRole('row').filter({ hasText: correct })).toContainText('arrival');
+  await expect(page.getByRole('button', { name: /register/i })).toHaveCount(0);
 });
 
 test('failed server mutation leaves the confirmed location, map and occupancy intact', async ({

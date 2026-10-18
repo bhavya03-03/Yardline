@@ -1,5 +1,7 @@
 # Build the Yardline Flutter worker client
 
+> **Implementation update:** The Android/iOS worker client is implemented in the separate [Yardline App repository](https://github.com/bhavya03-03/Yardline-App). Start with its [README](https://github.com/bhavya03-03/Yardline-App#readme) for current commands, configuration, workflows, and test coverage. Container registration and OCR remain in the mobile app; the web dashboard has no registration tab or shortcuts and refreshes shared state automatically. Backend source paths below refer to the [website repository](https://github.com/bhavya03-03/Yardline/tree/master/yardline). The sections below retain the original handoff and distinguish backend facts from initial client proposals. Do not create another backend or database.
+
 This is an implementation handoff for a **separate Flutter codebase**. It does not create an application, a backend, or a database. It is based on existing Yardline commit `f3b3cc3`, inspected 2026-10-18.
 
 Read [MOBILE_API_CONTRACT.md](MOBILE_API_CONTRACT.md) first for wire types; consult [MOBILE_INTEGRATION.md](MOBILE_INTEGRATION.md) for schema, security, validation, and gaps. These documents describe source-backed behavior. Flutter modules, packages, config names, and code snippets below are **recommended client implementation**, not existing application files.

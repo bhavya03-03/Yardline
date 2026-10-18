@@ -1,5 +1,7 @@
 # Yardline mobile integration: existing backend audit
 
+> **Flutter implementation:** The native worker client is implemented in the separate [Yardline App repository](https://github.com/bhavya03-03/Yardline-App); see its [README](https://github.com/bhavya03-03/Yardline-App#readme) for capabilities and verification. New-container registration and OCR belong to mobile; the web registration tab and shortcuts are removed, but the existing registration API and shared database remain available. The website refreshes shared state every 30 seconds while visible and when focus, visibility, or connectivity returns. Backend source paths below refer to the [website repository](https://github.com/bhavya03-03/Yardline/tree/master/yardline). This audit remains the backend reference; the native app adds no backend, database, schema, or API route.
+
 Inspected on 2026-10-18 against commit `f3b3cc3` (`figmafinal`). This is a source-based description of the current system, with recommendations explicitly separated from existing functionality. The mobile client is intended to use Flutter/Dart. No application code, schema, API, deployment configuration, or production data was changed for this audit.
 
 ## Deployment addendum (2026-10-18)

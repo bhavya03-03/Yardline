@@ -17,7 +17,9 @@ Open **http://localhost:3000**. On Windows, use `npm.cmd` if PowerShell blocks `
 
 There are **no required environment variables, cloud accounts, passwords, or paid APIs** for the local demonstration. The seed also runs automatically on the first API request against an empty local database. Records persist in `data/yardline.sqlite` across refreshes and server restarts. SQLite failures return errors; the application never falls back to memory or fake success.
 
-The initial screen is the populated yard map, with database-derived occupancy metrics. Every prominent control works, including registration, search, moves, dispatch, verification, filters, CSV export, configuration, and role switching.
+The initial screen is the populated yard map, with database-derived occupancy metrics. The website provides yard visibility, inventory, movement history, search, filters, CSV export, configuration, and existing operator controls. New-container registration, photography, and OCR belong to the separate [Yardline Flutter app](https://github.com/bhavya03-03/Yardline-App); the web registration tab and its shortcuts have been removed.
+
+Web and mobile use the same existing backend and database. Mobile registrations, placements, relocations, and dispatches appear on the web dashboard through its existing `/api/state` reads, every 30 seconds while visible and whenever the page regains focus, becomes visible, or reconnects. Both clients must use the same deployed API origin; a local SQLite website does not share the deployed database.
 
 For a production build served locally:
 
@@ -47,9 +49,9 @@ Deployment setup stores local access credentials under the ignored `.netlify/` d
 3. Click **Move container**. Choose **YD01-B02-R04-BY01-T01** on the destination map. Check the physical placement confirmation, then **Confirm relocation**.
 4. Return to **Full yard**. The previous slot is available and the destination is occupied. Search for MSCU1234566 again to see its updated location.
 5. Open **Movement History** and filter by MSCU1234566. Inspect the recorded old and new position, timestamp, operator, and reason.
-6. Open **Register Container**. Enter **TGHU7599330** (valid ISO check digit), select length 40 ft, and confirm the number against the source record. Alternatively use a photo and OCR, then correct its suggestion.
-7. Continue to placement. Choose **YD01-B03-R04-BY01-T01**, confirm physical placement, and save. Success appears only after the database transaction commits.
-8. Open **Overview**. Stored containers increase from 96 to 97 and available positions decrease from 201 to 200. Relocation alone does not change occupancy.
+6. Open the **Flutter mobile app**, connected to the same backend as the website. Register **TGHU7599330** (valid ISO check digit), select length 40 ft, and confirm the number. Alternatively take a photo, run OCR, and correct its suggestion before confirming.
+7. In the mobile app, choose **YD01-B03-R04-BY01-T01** if available, confirm physical placement, and save. Success appears only after the database transaction commits.
+8. Return to **Overview** on the website, or wait for its next 30-second refresh. Stored containers increase by one and available positions decrease by one. Relocation alone does not change occupancy.
 9. Optionally locate the newly registered container and dispatch it. Its slot becomes available and history is retained.
 
 These are **seeded demonstration records**, labeled throughout the interface. They do not describe a shipping company's actual operations.
@@ -73,11 +75,11 @@ Reset is **CLI-only**, refuses PostgreSQL / Supabase mode, and refuses databases
 
 ## Interface design
 
-The workspace visual specification is `figma.md`. All seven tabs use a white canvas, black text, variable-weight editorial headings, monochrome pill actions, and generous spacing. Shared tokens and controls live in `src/app/figma-workspace.css`, layered over the existing layout in `src/app/workspace.css`. Yard Map and Yard Configuration use lime, Containers uses mint, Register Container uses cream, and Movement History and Settings use lilac. Operational tables and form panels remain white within these pastel sections. Overview retains its section rhythm in `src/app/overview-figma.css`. Geist Sans and Geist Mono are locally served open-source font substitutes. Pastel sections are flat, with 24px corners on desktop and full-bleed edges on phones. Amber and red retain their warning and hazard meanings in the operational grid.
+The workspace visual specification is `figma.md`. All six web tabs use a white canvas, black text, variable-weight editorial headings, monochrome pill actions, and generous spacing. Shared tokens and controls live in `src/app/figma-workspace.css`, layered over the existing layout in `src/app/workspace.css`. Yard Map and Yard Configuration use lime, Containers uses mint, and Movement History and Settings use lilac. Operational tables and form panels remain white within these pastel sections. Overview retains its section rhythm in `src/app/overview-figma.css`. Geist Sans and Geist Mono are locally served open-source font substitutes. Pastel sections are flat, with 24px corners on desktop and full-bleed edges on phones. Amber and red retain their warning and hazard meanings in the operational grid.
 
 Overview and Yard Map share the readable grid presentation in `src/app/yard-grid.css`: navy occupied positions with white text, a block lime (`#dceeb1`) map surface, and high-contrast labels. Overview scales its yard table to the full panel width. Yard Map retains a compact, height-limited Full Yard view beside the inspector. Focused block tabs retain the row-and-bay matrix with proportional spacing and type, without internal scrolling or wrapping bays into separate groups. The position inspector remains to the right on desktop and stacks below the map on touch-sized screens. Selection, status filters, and tier controls use the existing yard data.
 
-Register Container retains its two-column intake layout: numbered identity/OCR, manifest and placement sections, a destination matrix, equipment profile, verification protocol, and a pre-flight summary. It stacks on smaller screens. Presets set the real size/type fields. The photograph and OCR result come from the operator's own upload or camera. Coordinates, destination validity, and occupancy come from the existing persisted yard. Handover references can be entered in the persisted notes field.
+Container registration is available in the Flutter worker app. The web sidebar, top bar, and position inspector provide no registration entry points. The existing `/api/actions/register` endpoint remains available to authorized mobile workers, with the same validation, optional image attachment, initial placement, and movement-history recording.
 
 The earlier Stitch exports are retained in `yardlinestitch-reference/stitch_yardline_container_yard_management (1)/` for layout reference. The Figma specification supersedes their lavender and blue theme and the earlier `design.md` styling. Account/profile access opens the existing identity and role controls in Settings; there is no separate profile route.
 
@@ -164,9 +166,9 @@ The adapter is selected explicitly. Missing PostgreSQL credentials or invalid au
 
 ## Camera and OCR
 
-Registration offers **Take photo**, **Upload image**, or manual entry. On supported smartphones the browser's native capture picker opens the camera. Camera permission and a secure browser context may be required; uploads and manual entry remain available.
+Container photography and OCR are mobile-worker features. The Flutter app offers camera capture, photo selection, and manual entry, with on-device ML Kit recognition. Workers review and correct the number, validate its ISO 6346 check digit, and confirm identity before submitting to the existing registration API. The website displays saved container details and attached photographs.
 
-Tesseract.js is lazy-loaded and runs in the browser. Its worker, WebAssembly engines, and English language model are copied from installed npm packages into `public/ocr/` during installation and before dev/build. **OCR needs no external CDN or API at runtime**; the model is served by the same application. The application displays the source photograph, recognized text, candidate number and confidence, and requires an editable number plus human identity confirmation. It never invents OCR output or silently saves a suggestion. Failed OCR explicitly offers manual entry. Administrators can deliberately save a nonstandard or invalid-check-digit number as an unverified exception; operators cannot bypass identity validation.
+Legacy browser registration/OCR source and its Tesseract asset preparation remain in the repository but are no longer exposed by the website. Removing a web tab does not disable backend registration: administrators can deliberately save an exceptional identity through the existing API, while operators cannot bypass identity validation.
 
 OCR identifies the **container**, not its location. Every placement requires a person to confirm the actual physical slot. No automatic tracking is claimed. Recognition accuracy on weathered container photographs is not guaranteed; capture printed identification close up, in good light.
 
@@ -183,7 +185,7 @@ npm run test:e2e
 
 Backend tests use isolated SQLite databases and verify generation, identity checks, duplicate prevention, foreign keys, unique occupancy, tier/length/capacity constraints, atomic rollback, competing writes, stale moves, audit records, dispatch metrics, verification and authorization.
 
-Browser tests run a separate server on port 3100 with a fresh `output/e2e-<timestamp>.sqlite` database and `.next-e2e` build folder. They execute the judging flow, inspect old/new slot states and history, register and dispatch a container, test role enforcement, create an irregular yard through the UI, and check mobile navigation and horizontal overflow. To use an installed Chrome instead of downloading Chromium on Windows:
+Browser tests run a separate server on port 3100 with a fresh `output/e2e-<timestamp>.sqlite` database and `.next-e2e` build folder. They execute the judging flow, inspect old/new slot states and history, register containers through a separate operator API client, check automatic web synchronization and saved photographs, dispatch a container, test role enforcement, create an irregular yard through the UI, and check mobile navigation and horizontal overflow. To use an installed Chrome instead of downloading Chromium on Windows:
 
 ```powershell
 $env:PLAYWRIGHT_CHANNEL='chrome'
@@ -192,7 +194,7 @@ npm run test:e2e
 
 Tests can append records to the isolated test database; they do not touch `data/yardline.sqlite`. Reports/screenshots are written under `output/playwright/` and failures under `test-results/`.
 
-Verified locally: **24 backend tests and seven browser tests passed**, including actual browser OCR with external HTTP services blocked, photo correction and persistence, the complete judging flow, failure-state preservation, permissions, and mobile layouts. Type checking, lint, and the production build are also checked. No live Supabase project was available for an integration test.
+The browser suite covers API-based mobile registration and web visibility rather than the retired browser OCR workflow. Flutter OCR and device-specific behavior are verified separately in the mobile app repository. No live Supabase project was available for an integration test.
 
 ## Scope for the next stage
 

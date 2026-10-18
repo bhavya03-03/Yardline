@@ -1,5 +1,7 @@
 # Yardline mobile API contract
 
+> **Flutter implementation:** The [Yardline App repository](https://github.com/bhavya03-03/Yardline-App) consumes this contract; see its [README](https://github.com/bhavya03-03/Yardline-App#readme). Registration and OCR are mobile workflows; the website registration tab and shortcuts have been removed, while `/api/actions/register` remains available to authorized clients. The website reads shared state every 30 seconds while visible and on focus, visibility, and connectivity restoration. Backend source paths below refer to the [website repository](https://github.com/bhavya03-03/Yardline/tree/master/yardline). Snapshot counts describe earlier verification, not constants to hardcode.
+
 Source baseline: `f3b3cc3` (`figmafinal`), inspected 2026-10-18. This describes **existing HTTP behavior**, not a proposed REST API. See [MOBILE_INTEGRATION.md](MOBILE_INTEGRATION.md) for physical schema, JSON request schemas, error catalog, security audit, and limitations. [MOBILE_IMPLEMENTATION_GUIDE.md](MOBILE_IMPLEMENTATION_GUIDE.md) applies this contract to Flutter.
 
 ## Verified Netlify demonstration (2026-10-18)
